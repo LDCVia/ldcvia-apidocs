@@ -25,7 +25,7 @@ The video below shows how to get your API key:
 
 # Authentication
 
-> To authorize, always pass the 'apikey' header:
+> To authorize, always pass the 'apikey' HTTP header:
 
 ```java
 package com.ldcvia.rest;
