@@ -153,7 +153,76 @@ You must replace `INSERTYOURAPIKEYHERE` with your personal API key.
 <h2 id="login">Login</h2>
 
 <p>We provide a simple login API to which you can pass a username and password, if they are valid then the matching API key will be returned with which you will be able to perform operations against the rest of the API.</p>
-<pre><code class="highlight java"><span class="c1">//TODO: Insert sampler here</span>
+<pre><code class="highlight java"><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ldcvia</span><span class="o">.</span><span class="na">rest</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.Serializable</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.ArrayList</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Collections</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.apache.http.HttpEntity</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.HttpResponse</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.client.ClientProtocolException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.client.ResponseHandler</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.client.methods.HttpPost</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.impl.client.CloseableHttpClient</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.impl.client.HttpClients</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.util.EntityUtils</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.entity.StringEntity</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonJavaArray</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonJavaFactory</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonJavaObject</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonParser</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.xsp.extlib.util.ExtLibUtil</span><span class="o">;</span>
+
+<span class="cm">/**
+ * Get the API key for the user
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */</span>
+<span class="kd">public</span> <span class="n">String</span> <span class="nf">login</span><span class="p">(</span><span class="n">String</span> <span class="n">username</span><span class="o">,</span> <span class="n">String</span> <span class="n">password</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ClientProtocolException</span><span class="o">,</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">JsonException</span><span class="o">{</span>
+    <span class="n">String</span> <span class="n">responseBody</span> <span class="o">=</span> <span class="n">postURL</span><span class="o">(</span><span class="s">"/1.0/login"</span><span class="o">,</span> <span class="s">"{\"username\": "</span> <span class="o">+</span> <span class="n">username</span> <span class="o">+</span> <span class="s">", \"password\": "</span> <span class="o">+</span> <span class="n">password</span> <span class="o">+</span> <span class="s">"}"</span><span class="o">);</span>
+    <span class="n">JsonJavaFactory</span> <span class="n">factory</span> <span class="o">=</span> <span class="n">JsonJavaFactory</span><span class="o">.</span><span class="na">instanceEx</span><span class="o">;</span>
+    <span class="n">JsonJavaObject</span> <span class="n">json</span> <span class="o">=</span> <span class="o">(</span><span class="n">JsonJavaObject</span><span class="o">)</span> <span class="n">JsonParser</span><span class="o">.</span><span class="na">fromJson</span><span class="o">(</span><span class="n">factory</span><span class="o">,</span> <span class="n">responseBody</span><span class="o">);</span>
+
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="s">"apikey"</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="cm">/**
+ * Helper method to post data to a URL from the LDC Via service
+ * @param url
+ * @param data
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */</span>
+<span class="kd">private</span> <span class="n">String</span> <span class="nf">postURL</span><span class="p">(</span><span class="n">String</span> <span class="n">url</span><span class="o">,</span> <span class="n">String</span> <span class="n">data</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ClientProtocolException</span><span class="o">,</span> <span class="n">IOException</span> <span class="o">{</span>
+    <span class="n">CloseableHttpClient</span> <span class="n">httpclient</span> <span class="o">=</span> <span class="n">HttpClients</span><span class="o">.</span><span class="na">createDefault</span><span class="o">();</span>
+    <span class="n">HttpPost</span> <span class="n">httppost</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HttpPost</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">baseurl</span> <span class="o">+</span> <span class="n">url</span><span class="o">);</span>
+  <span class="n">StringEntity</span> <span class="n">input</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringEntity</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
+    <span class="n">input</span><span class="o">.</span><span class="na">setContentType</span><span class="o">(</span><span class="s">"application/json"</span><span class="o">);</span>
+    <span class="n">httppost</span><span class="o">.</span><span class="na">setEntity</span><span class="o">(</span><span class="n">input</span><span class="o">);</span>
+    <span class="c1">// Create a custom response handler</span>
+    <span class="n">ResponseHandler</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">responseHandler</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ResponseHandler</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;()</span> <span class="o">{</span>
+
+        <span class="kd">public</span> <span class="n">String</span> <span class="n">handleResponse</span><span class="o">(</span><span class="kd">final</span> <span class="n">HttpResponse</span> <span class="n">response</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ClientProtocolException</span><span class="o">,</span> <span class="n">IOException</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">status</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">getStatusLine</span><span class="o">().</span><span class="na">getStatusCode</span><span class="o">();</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">status</span> <span class="o">&gt;=</span> <span class="mi">200</span> <span class="o">&amp;&amp;</span> <span class="n">status</span> <span class="o">&lt;</span> <span class="mi">300</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">HttpEntity</span> <span class="n">entity</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">getEntity</span><span class="o">();</span>
+                <span class="k">return</span> <span class="n">entity</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">?</span> <span class="n">EntityUtils</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">entity</span><span class="o">)</span> <span class="o">:</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="n">ClientProtocolException</span><span class="o">(</span><span class="s">"Unexpected response status: "</span> <span class="o">+</span> <span class="n">status</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+
+    <span class="o">};</span>
+    <span class="k">return</span> <span class="n">httpclient</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="n">httppost</span><span class="o">,</span> <span class="n">responseHandler</span><span class="o">);</span>
+<span class="o">}</span>
 </code></pre>
 <pre><code class="highlight javascript"><span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'username'</span><span class="p">:</span> <span class="s2">"fred@bloggs.com"</span><span class="p">,</span> <span class="s1">'password'</span><span class="p">:</span> <span class="s1">'SuperSecretPassword'</span><span class="p">};</span>
 <span class="kd">var</span> <span class="nx">root</span> <span class="o">=</span> <span class="s1">'https://ldcvia.com'</span><span class="p">;</span>
@@ -275,16 +344,104 @@ You must replace `INSERTYOURAPIKEYHERE` with your personal API key.
 
 <p><code class="prettyprint">GET http://ldcvia.com/api/1.0/databases</code></p>
 
-<h2 id="delete-entire-database">Delete Entire Database</h2>
+<h2 id="get-database-details">Get Database Details</h2>
 
-<p>Use this method to delete a database. You must be a super user to perform this operation, otherwise you will receive a 401 error.</p>
+<p>Use this method to get basic information about a database; its title and whether it is read only.</p>
 <pre><code class="highlight java"><span class="c1">//TODO: We need a sample here</span>
 </code></pre>
 <pre><code class="highlight javascript"><span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
   <span class="na">dataType</span><span class="p">:</span> <span class="s1">'json'</span><span class="p">,</span>
+  <span class="na">type</span><span class="p">:</span> <span class="s1">'GET'</span><span class="p">,</span>
+  <span class="na">headers</span><span class="p">:</span> <span class="p">{</span> <span class="s1">'apikey'</span><span class="p">:</span> <span class="nx">apikey</span> <span class="p">},</span>
+  <span class="na">url</span><span class="p">:</span> <span class="s1">'/1.0/database/'</span> <span class="o">+</span> <span class="nx">database</span><span class="p">,</span>
+  <span class="na">success</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">){</span>
+    <span class="c1">//do something</span>
+  <span class="p">},</span>
+  <span class="nx">error</span><span class="err">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">xhr</span><span class="p">,</span> <span class="nx">status</span><span class="p">,</span> <span class="nx">error</span><span class="p">){</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">xhr</span><span class="p">.</span><span class="nx">status</span> <span class="o">==</span> <span class="mi">401</span><span class="p">){</span>
+      <span class="nx">alert</span><span class="p">(</span><span class="s2">"You do not have the rights to access the database"</span><span class="p">);</span>
+    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+      <span class="nx">alert</span><span class="p">(</span><span class="nx">status</span> <span class="o">+</span> <span class="s1">'\n'</span> <span class="o">+</span> <span class="nx">error</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</code></pre>
+
+<blockquote>
+<p>If you can delete the database you will see:</p>
+</blockquote>
+<pre><code class="highlight json"><span class="p">{</span><span class="w">
+  </span><span class="s2">"db"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dev-londc-com-demos-fakenames-nsf"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"readonly"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NAB"</span><span class="w">
+</span><span class="p">}</span><span class="err">```</span><span class="w">
+
+</span><span class="err">###</span><span class="w"> </span><span class="err">HTTP</span><span class="w"> </span><span class="err">Request</span><span class="w">
+</span><span class="err">`GET</span><span class="w"> </span><span class="err">https://ldcvia.com/</span><span class="mf">1.0</span><span class="err">/database/:database`</span><span class="w">
+
+</span><span class="err">###</span><span class="w"> </span><span class="err">URL</span><span class="w"> </span><span class="err">Parameters</span><span class="w">
+
+</span><span class="err">Parameter</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="err">Description</span><span class="w">
+</span><span class="err">---------</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="err">-----------</span><span class="w">
+</span><span class="err">:database</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="err">This</span><span class="w"> </span><span class="err">is</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">unique</span><span class="w"> </span><span class="err">name</span><span class="w"> </span><span class="err">of</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">database</span><span class="w"> </span><span class="err">which</span><span class="w"> </span><span class="err">can</span><span class="w"> </span><span class="err">be</span><span class="w"> </span><span class="err">accessed</span><span class="w"> </span><span class="err">using</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">databases</span><span class="w"> </span><span class="err">service</span><span class="w">
+
+</span><span class="err">##</span><span class="w"> </span><span class="err">Set</span><span class="w"> </span><span class="err">Database</span><span class="w"> </span><span class="err">Details</span><span class="w">
+
+</span><span class="err">Use</span><span class="w"> </span><span class="err">this</span><span class="w"> </span><span class="err">method</span><span class="w"> </span><span class="err">to</span><span class="w"> </span><span class="err">make</span><span class="w"> </span><span class="err">a</span><span class="w"> </span><span class="err">database</span><span class="w"> </span><span class="err">read</span><span class="w"> </span><span class="err">only</span><span class="w"> </span><span class="err">or</span><span class="w"> </span><span class="err">change</span><span class="w"> </span><span class="err">its</span><span class="w"> </span><span class="err">title</span><span class="w">
+
+</span><span class="err">```java</span><span class="w">
+</span><span class="err">//TODO:</span><span class="w"> </span><span class="err">We</span><span class="w"> </span><span class="err">need</span><span class="w"> </span><span class="err">a</span><span class="w"> </span><span class="err">sample</span><span class="w"> </span><span class="err">here</span><span class="w">
+</span></code></pre>
+<pre><code class="highlight javascript"><span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="s2">"readonly=true&amp;title=New Title"</span><span class="p">;</span>
+<span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+  <span class="na">dataType</span><span class="p">:</span> <span class="s1">'json'</span><span class="p">,</span>
+  <span class="na">type</span><span class="p">:</span> <span class="s1">'POST'</span><span class="p">,</span>
+  <span class="na">data</span><span class="p">:</span> <span class="nx">data</span><span class="p">,</span>
+  <span class="na">headers</span><span class="p">:</span> <span class="p">{</span> <span class="s1">'apikey'</span><span class="p">:</span> <span class="nx">apikey</span> <span class="p">},</span>
+  <span class="na">url</span><span class="p">:</span> <span class="s1">'/1.0/database/'</span> <span class="o">+</span> <span class="nx">database</span><span class="p">,</span>
+  <span class="na">success</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">){</span>
+    <span class="c1">//do something</span>
+  <span class="p">},</span>
+  <span class="nx">error</span><span class="err">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">xhr</span><span class="p">,</span> <span class="nx">status</span><span class="p">,</span> <span class="nx">error</span><span class="p">){</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">xhr</span><span class="p">.</span><span class="nx">status</span> <span class="o">==</span> <span class="mi">401</span><span class="p">){</span>
+      <span class="nx">alert</span><span class="p">(</span><span class="s2">"You do not have the rights to access the database"</span><span class="p">);</span>
+    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+      <span class="nx">alert</span><span class="p">(</span><span class="nx">status</span> <span class="o">+</span> <span class="s1">'\n'</span> <span class="o">+</span> <span class="nx">error</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</code></pre>
+
+<blockquote>
+<p>If you can delete the database you will see:</p>
+</blockquote>
+<pre><code class="highlight json"><span class="p">{</span><span class="w">
+  </span><span class="s2">"db"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dev-londc-com-demos-fakenames-nsf"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"readonly"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NAB"</span><span class="w">
+</span><span class="p">}</span><span class="err">```</span><span class="w">
+
+</span><span class="err">###</span><span class="w"> </span><span class="err">HTTP</span><span class="w"> </span><span class="err">Request</span><span class="w">
+</span><span class="err">`GET</span><span class="w"> </span><span class="err">https://ldcvia.com/</span><span class="mf">1.0</span><span class="err">/database/:database`</span><span class="w">
+
+</span><span class="err">###</span><span class="w"> </span><span class="err">URL</span><span class="w"> </span><span class="err">Parameters</span><span class="w">
+
+</span><span class="err">Parameter</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="err">Description</span><span class="w">
+</span><span class="err">---------</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="err">-----------</span><span class="w">
+</span><span class="err">:database</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="err">This</span><span class="w"> </span><span class="err">is</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">unique</span><span class="w"> </span><span class="err">name</span><span class="w"> </span><span class="err">of</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">database</span><span class="w"> </span><span class="err">which</span><span class="w"> </span><span class="err">can</span><span class="w"> </span><span class="err">be</span><span class="w"> </span><span class="err">accessed</span><span class="w"> </span><span class="err">using</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">databases</span><span class="w"> </span><span class="err">service</span><span class="w">
+
+</span><span class="err">##</span><span class="w"> </span><span class="err">Delete</span><span class="w"> </span><span class="err">Entire</span><span class="w"> </span><span class="err">Database</span><span class="w">
+
+</span><span class="err">Use</span><span class="w"> </span><span class="err">this</span><span class="w"> </span><span class="err">method</span><span class="w"> </span><span class="err">to</span><span class="w"> </span><span class="err">delete</span><span class="w"> </span><span class="err">a</span><span class="w"> </span><span class="err">database.</span><span class="w"> </span><span class="err">You</span><span class="w"> </span><span class="err">must</span><span class="w"> </span><span class="err">be</span><span class="w"> </span><span class="err">a</span><span class="w"> </span><span class="err">super</span><span class="w"> </span><span class="err">user</span><span class="w"> </span><span class="err">to</span><span class="w"> </span><span class="err">perform</span><span class="w"> </span><span class="err">this</span><span class="w"> </span><span class="err">operation,</span><span class="w"> </span><span class="err">otherwise</span><span class="w"> </span><span class="err">you</span><span class="w"> </span><span class="err">will</span><span class="w"> </span><span class="err">receive</span><span class="w"> </span><span class="err">a</span><span class="w"> </span><span class="mi">401</span><span class="w"> </span><span class="err">error.</span><span class="w">
+
+</span><span class="err">```java</span><span class="w">
+</span><span class="err">//TODO:</span><span class="w"> </span><span class="err">We</span><span class="w"> </span><span class="err">need</span><span class="w"> </span><span class="err">a</span><span class="w"> </span><span class="err">sample</span><span class="w"> </span><span class="err">here</span><span class="w">
+</span></code></pre>
+<pre><code class="highlight javascript"><span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+  <span class="na">dataType</span><span class="p">:</span> <span class="s1">'json'</span><span class="p">,</span>
   <span class="na">type</span><span class="p">:</span> <span class="s1">'DELETE'</span><span class="p">,</span>
   <span class="na">headers</span><span class="p">:</span> <span class="p">{</span> <span class="s1">'apikey'</span><span class="p">:</span> <span class="nx">apikey</span> <span class="p">},</span>
-  <span class="na">url</span><span class="p">:</span> <span class="s1">'/1.0/databases/'</span> <span class="o">+</span> <span class="nx">database</span><span class="p">,</span>
+  <span class="na">url</span><span class="p">:</span> <span class="s1">'/1.0/database/'</span> <span class="o">+</span> <span class="nx">database</span><span class="p">,</span>
   <span class="na">success</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">){</span>
     <span class="c1">//do something</span>
   <span class="p">},</span>
