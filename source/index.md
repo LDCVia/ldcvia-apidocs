@@ -325,7 +325,73 @@ This endpoint retrieves all databases that you have access to.
 Use this method to get basic information about a database; its title and whether it is read only.
 
 ```java
-//TODO: We need a sample here
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Get a list of databases that the current user has access to
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public String getDatabaseTitle(String dbname) throws ClientProtocolException, IOException, JsonException{
+	String responseBody = loadURL("/1.0/database/" + dbname);
+	JsonJavaFactory factory = JsonJavaFactory.instanceEx;
+	JsonJavaObject json = (JsonJavaObject) JsonParser.fromJson(factory, responseBody);
+
+	return json.getAsString("title");
+}
+
+/**
+ * Helper method to request a URL from the LDC Via service
+ * @param url
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String loadURL(String url) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpGet httpget = new HttpGet(this.baseurl + url);
+
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	httpget.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httpget, responseHandler);
+}
 ```
 
 ```javascript
@@ -354,7 +420,8 @@ $.ajax({
   "db": "dev-londc-com-demos-fakenames-nsf",
   "readonly": false,
   "title": "NAB"
-}```
+}
+```
 
 ### HTTP Request
 `GET https://ldcvia.com/1.0/database/:database`
@@ -370,7 +437,75 @@ Parameter | Description
 Use this method to make a database read only or change its title
 
 ```java
-//TODO: We need a sample here
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.apache.http.entity.StringEntity;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Get a list of databases that the current user has access to
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public void setDatabaseTitle(String dbname, String title) throws ClientProtocolException, IOException, JsonException{
+	String responseBody = postURL("/1.0/database/" + dbname, "{\"title\": " + title + "}");
+	JsonJavaFactory factory = JsonJavaFactory.instanceEx;
+	JsonJavaObject json = (JsonJavaObject) JsonParser.fromJson(factory, responseBody);
+}
+
+/**
+ * Helper method to post data to a URL from the LDC Via service
+ * @param url
+ * @param data
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String postURL(String url, String data) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpPost httppost = new HttpPost(this.baseurl + url);
+  StringEntity input = new StringEntity(data);
+	input.setContentType("application/json");
+	httppost.setEntity(input);
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	httpget.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httppost, responseHandler);
+}
 ```
 
 ```javascript
