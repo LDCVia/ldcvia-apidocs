@@ -125,7 +125,76 @@ You must replace `INSERTYOURAPIKEYHERE` with your personal API key.
 We provide a simple login API to which you can pass a username and password, if they are valid then the matching API key will be returned with which you will be able to perform operations against the rest of the API.
 
 ```java
-//TODO: Insert sampler here
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.apache.http.entity.StringEntity;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Get the API key for the user
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public String login(String username, String password) throws ClientProtocolException, IOException, JsonException{
+	String responseBody = postURL("/1.0/login", "{\"username\": " + username + ", \"password\": " + password + "}");
+	JsonJavaFactory factory = JsonJavaFactory.instanceEx;
+	JsonJavaObject json = (JsonJavaObject) JsonParser.fromJson(factory, responseBody);
+
+	return json.getString("apikey");
+}
+
+/**
+ * Helper method to post data to a URL from the LDC Via service
+ * @param url
+ * @param data
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String postURL(String url, String data) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpPost httppost = new HttpPost(this.baseurl + url);
+  StringEntity input = new StringEntity(data);
+	input.setContentType("application/json");
+	httppost.setEntity(input);
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	return httpclient.execute(httppost, responseHandler);
+}
 ```
 
 ```javascript
@@ -251,6 +320,98 @@ This endpoint retrieves all databases that you have access to.
 
 `GET http://ldcvia.com/api/1.0/databases`
 
+## Get Database Details
+
+Use this method to get basic information about a database; its title and whether it is read only.
+
+```java
+//TODO: We need a sample here
+```
+
+```javascript
+$.ajax({
+  dataType: 'json',
+  type: 'GET',
+  headers: { 'apikey': apikey },
+  url: '/1.0/database/' + database,
+  success: function(res){
+    //do something
+  },
+  error: function(xhr, status, error){
+    if (xhr.status == 401){
+      alert("You do not have the rights to access the database");
+    }else{
+      alert(status + '\n' + error);
+    }
+  }
+});
+```
+
+> If you can delete the database you will see:
+
+```json
+{
+  "db": "dev-londc-com-demos-fakenames-nsf",
+  "readonly": false,
+  "title": "NAB"
+}```
+
+### HTTP Request
+`GET https://ldcvia.com/1.0/database/:database`
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+:database | This is the unique name of the database which can be accessed using the databases service
+
+## Set Database Details
+
+Use this method to make a database read only or change its title
+
+```java
+//TODO: We need a sample here
+```
+
+```javascript
+var data = "readonly=true&title=New Title";
+$.ajax({
+  dataType: 'json',
+  type: 'POST',
+  data: data,
+  headers: { 'apikey': apikey },
+  url: '/1.0/database/' + database,
+  success: function(res){
+    //do something
+  },
+  error: function(xhr, status, error){
+    if (xhr.status == 401){
+      alert("You do not have the rights to access the database");
+    }else{
+      alert(status + '\n' + error);
+    }
+  }
+});
+```
+
+> If you can delete the database you will see:
+
+```json
+{
+  "db": "dev-londc-com-demos-fakenames-nsf",
+  "readonly": false,
+  "title": "NAB"
+}```
+
+### HTTP Request
+`GET https://ldcvia.com/1.0/database/:database`
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+:database | This is the unique name of the database which can be accessed using the databases service
+
 ## Delete Entire Database
 
 Use this method to delete a database. You must be a super user to perform this operation, otherwise you will receive a 401 error.
@@ -264,7 +425,7 @@ $.ajax({
   dataType: 'json',
   type: 'DELETE',
   headers: { 'apikey': apikey },
-  url: '/1.0/databases/' + database,
+  url: '/1.0/database/' + database,
   success: function(res){
     //do something
   },
