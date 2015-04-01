@@ -95,7 +95,6 @@ private String loadURL(String url) throws ClientProtocolException, IOException {
 	httpget.addHeader("apikey", "MYSECRETAPIKEY");
 	return httpclient.execute(httpget, responseHandler);
 }
-
 ```
 
 ```javascript
@@ -533,10 +532,9 @@ $.ajax({
 
 ```json
 {
-  "db": "dev-londc-com-demos-fakenames-nsf",
-  "readonly": false,
-  "title": "NAB"
-}```
+  "result": "ok"
+}
+```
 
 ### HTTP Request
 `GET https://ldcvia.com/1.0/database/:database`
@@ -552,7 +550,69 @@ Parameter | Description
 Use this method to delete a database. You must be a super user to perform this operation, otherwise you will receive a 401 error.
 
 ```java
-//TODO: We need a sample here
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Get a list of databases that the current user has access to
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public void deleteDatabase(String dbname) throws ClientProtocolException, IOException, JsonException{
+	deleteURL("/1.0/database/" + dbname);
+}
+
+/**
+ * Helper method to delete a URL from the LDC Via service
+ * @param url
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String deleteURL(String url) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpDelete httpdelete = new HttpDelete(this.baseurl + url);
+
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	httpget.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httpget, responseHandler);
+}
 ```
 
 ```javascript
@@ -793,7 +853,69 @@ system fields | fields prefixed with __ are system fields that relate to your or
 To delete a collection, use this method. You must be a super user to perform this operation, or you will receive a 401 error.
 
 ```java
-//TODO: We need sample code here
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Get a list of databases that the current user has access to
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public void deleteCollection(String dbname, String collection) throws ClientProtocolException, IOException, JsonException{
+	deleteURL("/1.0/document/" + dbname + "/" + collection);
+}
+
+/**
+ * Helper method to delete a URL from the LDC Via service
+ * @param url
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String deleteURL(String url) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpDelete httpdelete = new HttpDelete(this.baseurl + url);
+
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	httpget.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httpget, responseHandler);
+}
 ```
 
 ```javascript
@@ -836,10 +958,136 @@ Parameter | Description
 
 ## Search in a collection
 
+```
+/*
+Example queries
+Search for documents where the field Body contains test OR the field From equals fred@ldcvia.com
+*/
+```
+```json
+{
+  "filters": [{
+    "operator": "contains",
+    "field": "Body",
+    "value": "test"
+  },
+  {
+    "operator": "equals",
+    "field": "From",
+    "value": "fred@ldcvia.com"
+  }]
+}
+```
+```
+/*
+Search for documents created on or after 1st Jan 2015 and on or before 31st Jan 2015 (remember to set ...&join=and on the URL)
+*/
+```
+```
+{
+  "filters": [
+  {
+    "operator": "$gte",
+    "field": "__created",
+    "value": "2015-01-01T00:00:00"
+  },
+  {
+    "operator": "$lte",
+    "field": "__created",
+    "value": "2015-01-31T23:59:59"
+  }
+  ]
+}
+```
+
 To perform a search against a collection, you can submit queries to be run against one or more fields.
 
+Search queries are built up using an array of JSON objects. You can search for exact matches in a field, fields that contain text, or date and number ranges. You can add as many parameters to a search as are required to get the set of documents that you need, and then use the URL parameters count and start to page through the results. In this way you can effectively create the equivalent of Notes views of data.
+
+Keywords that you can use to search for data include:
+
+Keyword | Function
+------- | --------
+contains | used to search a field to see if it contains the value being searched for
+equals | used to find a field that is an exact match for the value being searched for
+$gte | used when searching for dates and numbers greater than or equal to the value entered. For dates the full [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601) should be used
+$lte | used when searching for dates and numbers less than or equal to the value entered. For dates the full [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601) should be used
+
+Examples of different search JSON objects can be seen to the right of this page.
+
+When you enter multiple criteria, they are applied together with an OR style join by default, change this to AND using the URL parameter "...&join=and".
+
 ```java
-//TODO: Sample code required
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.apache.http.entity.StringEntity;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Get the API key for the user
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public JsonJavaArray searchField(String dbname, String collection, String fieldname, String query) throws ClientProtocolException, IOException, JsonException{
+	String responseBody = postURL("/1.0/search/" + dbname + "/" + collection, "{\"filters\": [{\"operator\": \"contains\", \"field\": \"" + fieldname + "\", \"value\": \"" + query + "\"}]}");
+	JsonJavaFactory factory = JsonJavaFactory.instanceEx;
+	JsonJavaObject json = (JsonJavaObject) JsonParser.fromJson(factory, responseBody);
+
+	return json.getAsArray("data");
+}
+
+/**
+ * Helper method to post data to a URL from the LDC Via service
+ * @param url
+ * @param data
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String postURL(String url, String data) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpPost httppost = new HttpPost(this.baseurl + url);
+  StringEntity input = new StringEntity(data);
+	input.setContentType("application/json");
+	httppost.setEntity(input);
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	return httpclient.execute(httppost, responseHandler);
+}
 ```
 
 ```javascript
@@ -912,12 +1160,13 @@ Parameter | Default | Description
 --------- | ------- | -----------
 count | 30 | The number of documents to get data for.
 start | 0 | The starting position in the view, use this to page through documents
+join | or | If you are applying multiple queries in a single search, the default will be to join them with an OR operator. Use this parameter to change the join to AND by setting &join=and in the URL
 
 ### Response JSON
 
 Property | Description
 -------- | -----------
-count | the total count of documents in the collection that the current user can see
+count | the total count of documents in the collection that the current user can see and that match the search criteria
 data | an array of document objects. the size of this array will not exceed the count URL parameter even if there are more documents in the collection. You will need to page through the data to get it all.
 _id | internal unique reference id
 rich text fields | when accessed via a collection all formatting is removed and a plain text representation of the content is returned. For full access to the rich text load the relevant document. Rich Text fields always have a second "__parsed" version of the field that can be used for searching purposes, this allows binary data to be stored in the primary rich text field
@@ -1029,7 +1278,74 @@ To insert a new document, use the PUT method and send JSON data to the service. 
 If the collection name (or database name) do not currently exist then they will automatically be created. By this process you can effectively create a brand new database by simply inserting a new document. Bear in mind that you will need to set up security for the database once it has been created.
 
 ```java
-//TODO: Add Sample Code
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.apache.http.entity.StringEntity;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+import java.util.Date;
+
+/**
+ * Get the API key for the user
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public void createNewDocument(String dbname, String collection, String subject, String body) throws ClientProtocolException, IOException, JsonException{
+  Date date = new Date();
+	putURL("/1.0/document/" + dbname + "/" + collection + "/" + date.getTime(), "{\"subject\": " + subject + ", \"body\": " + body + "}");
+}
+
+/**
+ * Helper method to post data to a URL from the LDC Via service
+ * @param url
+ * @param data
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String putURL(String url, String data) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpPut httpput = new HttpPust(this.baseurl + url);
+  StringEntity input = new StringEntity(data);
+	input.setContentType("application/json");
+	httppost.setEntity(input);
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	return httpclient.execute(httppust, responseHandler);
+}
 ```
 
 ```javascript
@@ -1112,7 +1428,72 @@ If the document does not exist then an error will be returned, in this case you 
 
 
 ```java
-//TODO: Add Sample Code
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.apache.http.entity.StringEntity;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Get the API key for the user
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public void updateDocument(String dbname, String collection, String unid, String subject, String body) throws ClientProtocolException, IOException, JsonException{
+	postURL("/1.0/document/" + dbname + "/" + collection + "/" + unid, "{\"subject\": " + subject + ", \"body\": " + body + "}");
+}
+
+/**
+ * Helper method to post data to a URL from the LDC Via service
+ * @param url
+ * @param data
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String postURL(String url, String data) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpPut httppost = new HttpPost(this.baseurl + url);
+  StringEntity input = new StringEntity(data);
+	input.setContentType("application/json");
+	httppost.setEntity(input);
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	return httpclient.execute(httppost, responseHandler);
+}
 ```
 
 ```javascript
@@ -1189,7 +1570,69 @@ Parameter | Description
 To delete a document, use this method. You must have the rights to update the document
 
 ```java
-//TODO: We need sample code here
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Get a list of databases that the current user has access to
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public void deleteDocument(String dbname, String collection, String unid) throws ClientProtocolException, IOException, JsonException{
+	deleteURL("/1.0/document/" + dbname + "/" + collection + "/" + unid);
+}
+
+/**
+ * Helper method to delete a URL from the LDC Via service
+ * @param url
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String deleteURL(String url) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpDelete httpdelete = new HttpDelete(this.baseurl + url);
+
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	httpget.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httpget, responseHandler);
+}
 ```
 
 ```javascript
@@ -1283,7 +1726,69 @@ Parameter | Description
 To delete a file attachment, use this method. You must have the rights to update the document to which the file is associated
 
 ```java
-//TODO: We need sample code here
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Get a list of databases that the current user has access to
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public void deleteAttachment(String dbname, String collection, String unid, String filename) throws ClientProtocolException, IOException, JsonException{
+	deleteURL("/1.0/document/" + dbname + "/" + collection + "/" + unid + "/" + filename);
+}
+
+/**
+ * Helper method to delete a URL from the LDC Via service
+ * @param url
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String deleteURL(String url) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpDelete httpdelete = new HttpDelete(this.baseurl + url);
+
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	httpget.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httpget, responseHandler);
+}
 ```
 
 ```javascript
@@ -1337,7 +1842,73 @@ You have the ability to read and update certain metadata details. An example of 
 To get a list of all fields that are in a collection, use this method.
 
 ```java
-//TODO: Add sample
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Get a list of databases that the current user has access to
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public JsonJavaArray getMetaData(String dbname, String collection) throws ClientProtocolException, IOException, JsonException{
+	String responseBody = loadURL("/1.0/metadata/" + dbname + "/" + collection);
+	JsonJavaFactory factory = JsonJavaFactory.instanceEx;
+	JsonJavaObject json = (JsonJavaObject) JsonParser.fromJson(factory, responseBody);
+
+	return json.getAsArray("fields");
+}
+
+/**
+ * Helper method to request a URL from the LDC Via service
+ * @param url
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String loadURL(String url) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpGet httpget = new HttpGet(this.baseurl + url);
+
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	httpget.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httpget, responseHandler);
+}
 ```
 
 ```javascript
@@ -1413,7 +1984,72 @@ Parameter | Description
 You can update meta data for a collection with this method. The most common use for this will be to enable and disable readers and authors fields, thus controlling document level security.
 
 ```java
-//TODO: Add a sample
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.apache.http.entity.StringEntity;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Get the API key for the user
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public void updateMetaDataField(String dbname, String collection, String fieldname, String fieldtype) throws ClientProtocolException, IOException, JsonException{
+	String responseBody = postURL("/1.0/metdata/" + dbname + "/" + collection + ", "{\"fields\": [{\"fieldname\": \"" + fieldname + "\", \"fieldtype\": \"" + fieldtype + "\"}]}");
+}
+
+/**
+ * Helper method to post data to a URL from the LDC Via service
+ * @param url
+ * @param data
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String postURL(String url, String data) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpPost httppost = new HttpPost(this.baseurl + url);
+  StringEntity input = new StringEntity(data);
+	input.setContentType("application/json");
+	httppost.setEntity(input);
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	return httpclient.execute(httppost, responseHandler);
+}
 ```
 
 ```javascript
