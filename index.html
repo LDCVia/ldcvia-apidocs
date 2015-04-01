@@ -125,7 +125,6 @@
     <span class="n">httpget</span><span class="o">.</span><span class="na">addHeader</span><span class="o">(</span><span class="s">"apikey"</span><span class="o">,</span> <span class="s">"MYSECRETAPIKEY"</span><span class="o">);</span>
     <span class="k">return</span> <span class="n">httpclient</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="n">httpget</span><span class="o">,</span> <span class="n">responseHandler</span><span class="o">);</span>
 <span class="o">}</span>
-
 </code></pre>
 <pre><code class="highlight javascript"><span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
     <span class="na">dataType</span><span class="p">:</span> <span class="s1">'json'</span><span class="p">,</span>
@@ -558,27 +557,95 @@ You must replace `INSERTYOURAPIKEYHERE` with your personal API key.
 <p>If you can delete the database you will see:</p>
 </blockquote>
 <pre><code class="highlight json"><span class="p">{</span><span class="w">
-  </span><span class="s2">"db"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dev-londc-com-demos-fakenames-nsf"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"readonly"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NAB"</span><span class="w">
-</span><span class="p">}</span><span class="err">```</span><span class="w">
-
-</span><span class="err">###</span><span class="w"> </span><span class="err">HTTP</span><span class="w"> </span><span class="err">Request</span><span class="w">
-</span><span class="err">`GET</span><span class="w"> </span><span class="err">https://ldcvia.com/</span><span class="mf">1.0</span><span class="err">/database/:database`</span><span class="w">
-
-</span><span class="err">###</span><span class="w"> </span><span class="err">URL</span><span class="w"> </span><span class="err">Parameters</span><span class="w">
-
-</span><span class="err">Parameter</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="err">Description</span><span class="w">
-</span><span class="err">---------</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="err">-----------</span><span class="w">
-</span><span class="err">:database</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="err">This</span><span class="w"> </span><span class="err">is</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">unique</span><span class="w"> </span><span class="err">name</span><span class="w"> </span><span class="err">of</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">database</span><span class="w"> </span><span class="err">which</span><span class="w"> </span><span class="err">can</span><span class="w"> </span><span class="err">be</span><span class="w"> </span><span class="err">accessed</span><span class="w"> </span><span class="err">using</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">databases</span><span class="w"> </span><span class="err">service</span><span class="w">
-
-</span><span class="err">##</span><span class="w"> </span><span class="err">Delete</span><span class="w"> </span><span class="err">Entire</span><span class="w"> </span><span class="err">Database</span><span class="w">
-
-</span><span class="err">Use</span><span class="w"> </span><span class="err">this</span><span class="w"> </span><span class="err">method</span><span class="w"> </span><span class="err">to</span><span class="w"> </span><span class="err">delete</span><span class="w"> </span><span class="err">a</span><span class="w"> </span><span class="err">database.</span><span class="w"> </span><span class="err">You</span><span class="w"> </span><span class="err">must</span><span class="w"> </span><span class="err">be</span><span class="w"> </span><span class="err">a</span><span class="w"> </span><span class="err">super</span><span class="w"> </span><span class="err">user</span><span class="w"> </span><span class="err">to</span><span class="w"> </span><span class="err">perform</span><span class="w"> </span><span class="err">this</span><span class="w"> </span><span class="err">operation,</span><span class="w"> </span><span class="err">otherwise</span><span class="w"> </span><span class="err">you</span><span class="w"> </span><span class="err">will</span><span class="w"> </span><span class="err">receive</span><span class="w"> </span><span class="err">a</span><span class="w"> </span><span class="mi">401</span><span class="w"> </span><span class="err">error.</span><span class="w">
-
-</span><span class="err">```java</span><span class="w">
-</span><span class="err">//TODO:</span><span class="w"> </span><span class="err">We</span><span class="w"> </span><span class="err">need</span><span class="w"> </span><span class="err">a</span><span class="w"> </span><span class="err">sample</span><span class="w"> </span><span class="err">here</span><span class="w">
+  </span><span class="s2">"result"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ok"</span><span class="w">
+</span><span class="p">}</span><span class="w">
 </span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://ldcvia.com/1.0/database/:database</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>:database</td>
+<td>This is the unique name of the database which can be accessed using the databases service</td>
+</tr>
+</tbody></table>
+
+<h2 id="delete-entire-database">Delete Entire Database</h2>
+
+<p>Use this method to delete a database. You must be a super user to perform this operation, otherwise you will receive a 401 error.</p>
+<pre><code class="highlight java"><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ldcvia</span><span class="o">.</span><span class="na">rest</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.Serializable</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.ArrayList</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Collections</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.apache.http.HttpEntity</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.HttpResponse</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.client.ClientProtocolException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.client.ResponseHandler</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.client.methods.HttpDelete</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.impl.client.CloseableHttpClient</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.impl.client.HttpClients</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.util.EntityUtils</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonJavaArray</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonJavaFactory</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonJavaObject</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonParser</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.xsp.extlib.util.ExtLibUtil</span><span class="o">;</span>
+
+<span class="cm">/**
+ * Get a list of databases that the current user has access to
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">deleteDatabase</span><span class="p">(</span><span class="n">String</span> <span class="n">dbname</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ClientProtocolException</span><span class="o">,</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">JsonException</span><span class="o">{</span>
+    <span class="n">deleteURL</span><span class="o">(</span><span class="s">"/1.0/database/"</span> <span class="o">+</span> <span class="n">dbname</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="cm">/**
+ * Helper method to delete a URL from the LDC Via service
+ * @param url
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */</span>
+<span class="kd">private</span> <span class="n">String</span> <span class="nf">deleteURL</span><span class="p">(</span><span class="n">String</span> <span class="n">url</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ClientProtocolException</span><span class="o">,</span> <span class="n">IOException</span> <span class="o">{</span>
+    <span class="n">CloseableHttpClient</span> <span class="n">httpclient</span> <span class="o">=</span> <span class="n">HttpClients</span><span class="o">.</span><span class="na">createDefault</span><span class="o">();</span>
+    <span class="n">HttpDelete</span> <span class="n">httpdelete</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HttpDelete</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">baseurl</span> <span class="o">+</span> <span class="n">url</span><span class="o">);</span>
+
+    <span class="c1">// Create a custom response handler</span>
+    <span class="n">ResponseHandler</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">responseHandler</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ResponseHandler</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;()</span> <span class="o">{</span>
+
+        <span class="kd">public</span> <span class="n">String</span> <span class="n">handleResponse</span><span class="o">(</span><span class="kd">final</span> <span class="n">HttpResponse</span> <span class="n">response</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ClientProtocolException</span><span class="o">,</span> <span class="n">IOException</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">status</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">getStatusLine</span><span class="o">().</span><span class="na">getStatusCode</span><span class="o">();</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">status</span> <span class="o">&gt;=</span> <span class="mi">200</span> <span class="o">&amp;&amp;</span> <span class="n">status</span> <span class="o">&lt;</span> <span class="mi">300</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">HttpEntity</span> <span class="n">entity</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">getEntity</span><span class="o">();</span>
+                <span class="k">return</span> <span class="n">entity</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">?</span> <span class="n">EntityUtils</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">entity</span><span class="o">)</span> <span class="o">:</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="n">ClientProtocolException</span><span class="o">(</span><span class="s">"Unexpected response status: "</span> <span class="o">+</span> <span class="n">status</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+
+    <span class="o">};</span>
+    <span class="n">httpget</span><span class="o">.</span><span class="na">addHeader</span><span class="o">(</span><span class="s">"apikey"</span><span class="o">,</span> <span class="s">"MYSECRETAPIKEY"</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">httpclient</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="n">httpget</span><span class="o">,</span> <span class="n">responseHandler</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre>
 <pre><code class="highlight javascript"><span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
   <span class="na">dataType</span><span class="p">:</span> <span class="s1">'json'</span><span class="p">,</span>
   <span class="na">type</span><span class="p">:</span> <span class="s1">'DELETE'</span><span class="p">,</span>
@@ -869,7 +936,69 @@ You must replace `INSERTYOURAPIKEYHERE` with your personal API key.
 <h2 id="delete-entire-collection">Delete entire collection</h2>
 
 <p>To delete a collection, use this method. You must be a super user to perform this operation, or you will receive a 401 error.</p>
-<pre><code class="highlight java"><span class="c1">//TODO: We need sample code here</span>
+<pre><code class="highlight java"><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ldcvia</span><span class="o">.</span><span class="na">rest</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.Serializable</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.ArrayList</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Collections</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.apache.http.HttpEntity</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.HttpResponse</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.client.ClientProtocolException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.client.ResponseHandler</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.client.methods.HttpDelete</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.impl.client.CloseableHttpClient</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.impl.client.HttpClients</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.util.EntityUtils</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonJavaArray</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonJavaFactory</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonJavaObject</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonParser</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.xsp.extlib.util.ExtLibUtil</span><span class="o">;</span>
+
+<span class="cm">/**
+ * Get a list of databases that the current user has access to
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">deleteCollection</span><span class="p">(</span><span class="n">String</span> <span class="n">dbname</span><span class="o">,</span> <span class="n">String</span> <span class="n">collection</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ClientProtocolException</span><span class="o">,</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">JsonException</span><span class="o">{</span>
+    <span class="n">deleteURL</span><span class="o">(</span><span class="s">"/1.0/document/"</span> <span class="o">+</span> <span class="n">dbname</span> <span class="o">+</span> <span class="s">"/"</span> <span class="o">+</span> <span class="n">collection</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="cm">/**
+ * Helper method to delete a URL from the LDC Via service
+ * @param url
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */</span>
+<span class="kd">private</span> <span class="n">String</span> <span class="nf">deleteURL</span><span class="p">(</span><span class="n">String</span> <span class="n">url</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ClientProtocolException</span><span class="o">,</span> <span class="n">IOException</span> <span class="o">{</span>
+    <span class="n">CloseableHttpClient</span> <span class="n">httpclient</span> <span class="o">=</span> <span class="n">HttpClients</span><span class="o">.</span><span class="na">createDefault</span><span class="o">();</span>
+    <span class="n">HttpDelete</span> <span class="n">httpdelete</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HttpDelete</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">baseurl</span> <span class="o">+</span> <span class="n">url</span><span class="o">);</span>
+
+    <span class="c1">// Create a custom response handler</span>
+    <span class="n">ResponseHandler</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">responseHandler</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ResponseHandler</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;()</span> <span class="o">{</span>
+
+        <span class="kd">public</span> <span class="n">String</span> <span class="n">handleResponse</span><span class="o">(</span><span class="kd">final</span> <span class="n">HttpResponse</span> <span class="n">response</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ClientProtocolException</span><span class="o">,</span> <span class="n">IOException</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">status</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">getStatusLine</span><span class="o">().</span><span class="na">getStatusCode</span><span class="o">();</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">status</span> <span class="o">&gt;=</span> <span class="mi">200</span> <span class="o">&amp;&amp;</span> <span class="n">status</span> <span class="o">&lt;</span> <span class="mi">300</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">HttpEntity</span> <span class="n">entity</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">getEntity</span><span class="o">();</span>
+                <span class="k">return</span> <span class="n">entity</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">?</span> <span class="n">EntityUtils</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">entity</span><span class="o">)</span> <span class="o">:</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="n">ClientProtocolException</span><span class="o">(</span><span class="s">"Unexpected response status: "</span> <span class="o">+</span> <span class="n">status</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+
+    <span class="o">};</span>
+    <span class="n">httpget</span><span class="o">.</span><span class="na">addHeader</span><span class="o">(</span><span class="s">"apikey"</span><span class="o">,</span> <span class="s">"MYSECRETAPIKEY"</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">httpclient</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="n">httpget</span><span class="o">,</span> <span class="n">responseHandler</span><span class="o">);</span>
+<span class="o">}</span>
 </code></pre>
 <pre><code class="highlight javascript"><span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
   <span class="na">dataType</span><span class="p">:</span> <span class="s1">'json'</span><span class="p">,</span>
@@ -921,9 +1050,147 @@ You must replace `INSERTYOURAPIKEYHERE` with your personal API key.
 </tbody></table>
 
 <h2 id="search-in-a-collection">Search in a collection</h2>
+<pre><code class="highlight plaintext">/*
+Example queries
+Search for documents where the field Body contains test OR the field From equals fred@ldcvia.com
+*/
+</code></pre>
+<pre><code class="highlight json"><span class="p">{</span><span class="w">
+  </span><span class="s2">"filters"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w">
+    </span><span class="s2">"operator"</span><span class="p">:</span><span class="w"> </span><span class="s2">"contains"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"field"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Body"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"operator"</span><span class="p">:</span><span class="w"> </span><span class="s2">"equals"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"field"</span><span class="p">:</span><span class="w"> </span><span class="s2">"From"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fred@ldcvia.com"</span><span class="w">
+  </span><span class="p">}]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<pre><code class="highlight plaintext">/*
+Search for documents created on or after 1st Jan 2015 and on or before 31st Jan 2015 (remember to set ...&amp;join=and on the URL)
+*/
+</code></pre>
+<pre><code class="highlight json"><span class="p">{</span><span class="w">
+  </span><span class="s2">"filters"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"operator"</span><span class="p">:</span><span class="w"> </span><span class="s2">"$gte"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"field"</span><span class="p">:</span><span class="w"> </span><span class="s2">"__created"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-01-01T00:00:00"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"operator"</span><span class="p">:</span><span class="w"> </span><span class="s2">"$lte"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"field"</span><span class="p">:</span><span class="w"> </span><span class="s2">"__created"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-01-31T23:59:59"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
 
 <p>To perform a search against a collection, you can submit queries to be run against one or more fields.</p>
-<pre><code class="highlight java"><span class="c1">//TODO: Sample code required</span>
+
+<p>Search queries are built up using an array of JSON objects. You can search for exact matches in a field, fields that contain text, or date and number ranges. You can add as many parameters to a search as are required to get the set of documents that you need, and then use the URL parameters count and start to page through the results. In this way you can effectively create the equivalent of Notes views of data.</p>
+
+<p>Keywords that you can use to search for data include:</p>
+
+<table><thead>
+<tr>
+<th>Keyword</th>
+<th>Function</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>contains</td>
+<td>used to search a field to see if it contains the value being searched for</td>
+</tr>
+<tr>
+<td>equals</td>
+<td>used to find a field that is an exact match for the value being searched for</td>
+</tr>
+<tr>
+<td>$gte</td>
+<td>used when searching for dates and numbers greater than or equal to the value entered. For dates the full <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a> should be used</td>
+</tr>
+<tr>
+<td>$lte</td>
+<td>used when searching for dates and numbers less than or equal to the value entered. For dates the full <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a> should be used</td>
+</tr>
+</tbody></table>
+
+<p>Examples of different search JSON objects can be seen to the right of this page.</p>
+
+<p>When you enter multiple criteria, they are applied together with an OR style join by default, change this to AND using the URL parameter &ldquo;&hellip;&amp;join=and&rdquo;.</p>
+<pre><code class="highlight java"><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ldcvia</span><span class="o">.</span><span class="na">rest</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.Serializable</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.ArrayList</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Collections</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.apache.http.HttpEntity</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.HttpResponse</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.client.ClientProtocolException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.client.ResponseHandler</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.client.methods.HttpPost</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.impl.client.CloseableHttpClient</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.impl.client.HttpClients</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.util.EntityUtils</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.entity.StringEntity</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonJavaArray</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonJavaFactory</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonJavaObject</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonParser</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.xsp.extlib.util.ExtLibUtil</span><span class="o">;</span>
+
+<span class="cm">/**
+ * Get the API key for the user
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */</span>
+<span class="kd">public</span> <span class="n">JsonJavaArray</span> <span class="nf">searchField</span><span class="p">(</span><span class="n">String</span> <span class="n">dbname</span><span class="o">,</span> <span class="n">String</span> <span class="n">collection</span><span class="o">,</span> <span class="n">String</span> <span class="n">fieldname</span><span class="o">,</span> <span class="n">String</span> <span class="n">query</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ClientProtocolException</span><span class="o">,</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">JsonException</span><span class="o">{</span>
+    <span class="n">String</span> <span class="n">responseBody</span> <span class="o">=</span> <span class="n">postURL</span><span class="o">(</span><span class="s">"/1.0/search/"</span> <span class="o">+</span> <span class="n">dbname</span> <span class="o">+</span> <span class="s">"/"</span> <span class="o">+</span> <span class="n">collection</span><span class="o">,</span> <span class="s">"{\"filters\": [{\"operator\": \"contains\", \"field\": \""</span> <span class="o">+</span> <span class="n">fieldname</span> <span class="o">+</span> <span class="s">"\", \"value\": \""</span> <span class="o">+</span> <span class="n">query</span> <span class="o">+</span> <span class="s">"\"}]}"</span><span class="o">);</span>
+    <span class="n">JsonJavaFactory</span> <span class="n">factory</span> <span class="o">=</span> <span class="n">JsonJavaFactory</span><span class="o">.</span><span class="na">instanceEx</span><span class="o">;</span>
+    <span class="n">JsonJavaObject</span> <span class="n">json</span> <span class="o">=</span> <span class="o">(</span><span class="n">JsonJavaObject</span><span class="o">)</span> <span class="n">JsonParser</span><span class="o">.</span><span class="na">fromJson</span><span class="o">(</span><span class="n">factory</span><span class="o">,</span> <span class="n">responseBody</span><span class="o">);</span>
+
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="na">getAsArray</span><span class="o">(</span><span class="s">"data"</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="cm">/**
+ * Helper method to post data to a URL from the LDC Via service
+ * @param url
+ * @param data
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */</span>
+<span class="kd">private</span> <span class="n">String</span> <span class="nf">postURL</span><span class="p">(</span><span class="n">String</span> <span class="n">url</span><span class="o">,</span> <span class="n">String</span> <span class="n">data</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ClientProtocolException</span><span class="o">,</span> <span class="n">IOException</span> <span class="o">{</span>
+    <span class="n">CloseableHttpClient</span> <span class="n">httpclient</span> <span class="o">=</span> <span class="n">HttpClients</span><span class="o">.</span><span class="na">createDefault</span><span class="o">();</span>
+    <span class="n">HttpPost</span> <span class="n">httppost</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HttpPost</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">baseurl</span> <span class="o">+</span> <span class="n">url</span><span class="o">);</span>
+  <span class="n">StringEntity</span> <span class="n">input</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringEntity</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
+    <span class="n">input</span><span class="o">.</span><span class="na">setContentType</span><span class="o">(</span><span class="s">"application/json"</span><span class="o">);</span>
+    <span class="n">httppost</span><span class="o">.</span><span class="na">setEntity</span><span class="o">(</span><span class="n">input</span><span class="o">);</span>
+    <span class="c1">// Create a custom response handler</span>
+    <span class="n">ResponseHandler</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">responseHandler</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ResponseHandler</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;()</span> <span class="o">{</span>
+
+        <span class="kd">public</span> <span class="n">String</span> <span class="n">handleResponse</span><span class="o">(</span><span class="kd">final</span> <span class="n">HttpResponse</span> <span class="n">response</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ClientProtocolException</span><span class="o">,</span> <span class="n">IOException</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">status</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">getStatusLine</span><span class="o">().</span><span class="na">getStatusCode</span><span class="o">();</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">status</span> <span class="o">&gt;=</span> <span class="mi">200</span> <span class="o">&amp;&amp;</span> <span class="n">status</span> <span class="o">&lt;</span> <span class="mi">300</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">HttpEntity</span> <span class="n">entity</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">getEntity</span><span class="o">();</span>
+                <span class="k">return</span> <span class="n">entity</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">?</span> <span class="n">EntityUtils</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">entity</span><span class="o">)</span> <span class="o">:</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="n">ClientProtocolException</span><span class="o">(</span><span class="s">"Unexpected response status: "</span> <span class="o">+</span> <span class="n">status</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+
+    <span class="o">};</span>
+    <span class="k">return</span> <span class="n">httpclient</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="n">httppost</span><span class="o">,</span> <span class="n">responseHandler</span><span class="o">);</span>
+<span class="o">}</span>
 </code></pre>
 <pre><code class="highlight javascript"><span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
   <span class="na">dataType</span><span class="p">:</span> <span class="s1">'json'</span><span class="p">,</span>
@@ -1019,6 +1286,11 @@ You must replace `INSERTYOURAPIKEYHERE` with your personal API key.
 <td>0</td>
 <td>The starting position in the view, use this to page through documents</td>
 </tr>
+<tr>
+<td>join</td>
+<td>or</td>
+<td>If you are applying multiple queries in a single search, the default will be to join them with an OR operator. Use this parameter to change the join to AND by setting &amp;join=and in the URL</td>
+</tr>
 </tbody></table>
 
 <h3 id="response-json">Response JSON</h3>
@@ -1031,7 +1303,7 @@ You must replace `INSERTYOURAPIKEYHERE` with your personal API key.
 </thead><tbody>
 <tr>
 <td>count</td>
-<td>the total count of documents in the collection that the current user can see</td>
+<td>the total count of documents in the collection that the current user can see and that match the search criteria</td>
 </tr>
 <tr>
 <td>data</td>
@@ -1166,7 +1438,74 @@ You must replace `INSERTYOURAPIKEYHERE` with your personal API key.
 <p>To insert a new document, use the PUT method and send JSON data to the service. If a document with the :unid already exists in the collection, an error will be returned. Use the POST method to update existing documents.</p>
 
 <p>If the collection name (or database name) do not currently exist then they will automatically be created. By this process you can effectively create a brand new database by simply inserting a new document. Bear in mind that you will need to set up security for the database once it has been created.</p>
-<pre><code class="highlight java"><span class="c1">//TODO: Add Sample Code</span>
+<pre><code class="highlight java"><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ldcvia</span><span class="o">.</span><span class="na">rest</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.Serializable</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.ArrayList</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Collections</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.apache.http.HttpEntity</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.HttpResponse</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.client.ClientProtocolException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.client.ResponseHandler</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.client.methods.HttpPut</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.impl.client.CloseableHttpClient</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.impl.client.HttpClients</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.util.EntityUtils</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.entity.StringEntity</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonJavaArray</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonJavaFactory</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonJavaObject</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonParser</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.xsp.extlib.util.ExtLibUtil</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Date</span><span class="o">;</span>
+
+<span class="cm">/**
+ * Get the API key for the user
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">createNewDocument</span><span class="p">(</span><span class="n">String</span> <span class="n">dbname</span><span class="o">,</span> <span class="n">String</span> <span class="n">collection</span><span class="o">,</span> <span class="n">String</span> <span class="n">subject</span><span class="o">,</span> <span class="n">String</span> <span class="n">body</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ClientProtocolException</span><span class="o">,</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">JsonException</span><span class="o">{</span>
+  <span class="n">Date</span> <span class="n">date</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Date</span><span class="o">();</span>
+    <span class="n">putURL</span><span class="o">(</span><span class="s">"/1.0/document/"</span> <span class="o">+</span> <span class="n">dbname</span> <span class="o">+</span> <span class="s">"/"</span> <span class="o">+</span> <span class="n">collection</span> <span class="o">+</span> <span class="s">"/"</span> <span class="o">+</span> <span class="n">date</span><span class="o">.</span><span class="na">getTime</span><span class="o">(),</span> <span class="s">"{\"subject\": "</span> <span class="o">+</span> <span class="n">subject</span> <span class="o">+</span> <span class="s">", \"body\": "</span> <span class="o">+</span> <span class="n">body</span> <span class="o">+</span> <span class="s">"}"</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="cm">/**
+ * Helper method to post data to a URL from the LDC Via service
+ * @param url
+ * @param data
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */</span>
+<span class="kd">private</span> <span class="n">String</span> <span class="nf">putURL</span><span class="p">(</span><span class="n">String</span> <span class="n">url</span><span class="o">,</span> <span class="n">String</span> <span class="n">data</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ClientProtocolException</span><span class="o">,</span> <span class="n">IOException</span> <span class="o">{</span>
+    <span class="n">CloseableHttpClient</span> <span class="n">httpclient</span> <span class="o">=</span> <span class="n">HttpClients</span><span class="o">.</span><span class="na">createDefault</span><span class="o">();</span>
+    <span class="n">HttpPut</span> <span class="n">httpput</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HttpPust</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">baseurl</span> <span class="o">+</span> <span class="n">url</span><span class="o">);</span>
+  <span class="n">StringEntity</span> <span class="n">input</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringEntity</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
+    <span class="n">input</span><span class="o">.</span><span class="na">setContentType</span><span class="o">(</span><span class="s">"application/json"</span><span class="o">);</span>
+    <span class="n">httppost</span><span class="o">.</span><span class="na">setEntity</span><span class="o">(</span><span class="n">input</span><span class="o">);</span>
+    <span class="c1">// Create a custom response handler</span>
+    <span class="n">ResponseHandler</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">responseHandler</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ResponseHandler</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;()</span> <span class="o">{</span>
+
+        <span class="kd">public</span> <span class="n">String</span> <span class="n">handleResponse</span><span class="o">(</span><span class="kd">final</span> <span class="n">HttpResponse</span> <span class="n">response</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ClientProtocolException</span><span class="o">,</span> <span class="n">IOException</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">status</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">getStatusLine</span><span class="o">().</span><span class="na">getStatusCode</span><span class="o">();</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">status</span> <span class="o">&gt;=</span> <span class="mi">200</span> <span class="o">&amp;&amp;</span> <span class="n">status</span> <span class="o">&lt;</span> <span class="mi">300</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">HttpEntity</span> <span class="n">entity</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">getEntity</span><span class="o">();</span>
+                <span class="k">return</span> <span class="n">entity</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">?</span> <span class="n">EntityUtils</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">entity</span><span class="o">)</span> <span class="o">:</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="n">ClientProtocolException</span><span class="o">(</span><span class="s">"Unexpected response status: "</span> <span class="o">+</span> <span class="n">status</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+
+    <span class="o">};</span>
+    <span class="k">return</span> <span class="n">httpclient</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="n">httppust</span><span class="o">,</span> <span class="n">responseHandler</span><span class="o">);</span>
+<span class="o">}</span>
 </code></pre>
 <pre><code class="highlight javascript"><span class="c1">//Taken from our Discussion template</span>
 <span class="nx">disc</span><span class="p">.</span><span class="nx">saveNewMainTopic</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
@@ -1261,7 +1600,72 @@ You must replace `INSERTYOURAPIKEYHERE` with your personal API key.
 <p>When you want to update a document use this method. You only need to post the fields that you want to update. Those fields will overwrite matching fields in the document, or add them if they don&rsquo;t already exist. To remove a field set its value to null.</p>
 
 <p>If the document does not exist then an error will be returned, in this case you should use the PUT method instead.</p>
-<pre><code class="highlight java"><span class="c1">//TODO: Add Sample Code</span>
+<pre><code class="highlight java"><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ldcvia</span><span class="o">.</span><span class="na">rest</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.Serializable</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.ArrayList</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Collections</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.apache.http.HttpEntity</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.HttpResponse</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.client.ClientProtocolException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.client.ResponseHandler</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.client.methods.HttpPost</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.impl.client.CloseableHttpClient</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.impl.client.HttpClients</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.util.EntityUtils</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.entity.StringEntity</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonJavaArray</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonJavaFactory</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonJavaObject</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonParser</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.xsp.extlib.util.ExtLibUtil</span><span class="o">;</span>
+
+<span class="cm">/**
+ * Get the API key for the user
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">updateDocument</span><span class="p">(</span><span class="n">String</span> <span class="n">dbname</span><span class="o">,</span> <span class="n">String</span> <span class="n">collection</span><span class="o">,</span> <span class="n">String</span> <span class="n">unid</span><span class="o">,</span> <span class="n">String</span> <span class="n">subject</span><span class="o">,</span> <span class="n">String</span> <span class="n">body</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ClientProtocolException</span><span class="o">,</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">JsonException</span><span class="o">{</span>
+    <span class="n">postURL</span><span class="o">(</span><span class="s">"/1.0/document/"</span> <span class="o">+</span> <span class="n">dbname</span> <span class="o">+</span> <span class="s">"/"</span> <span class="o">+</span> <span class="n">collection</span> <span class="o">+</span> <span class="s">"/"</span> <span class="o">+</span> <span class="n">unid</span><span class="o">,</span> <span class="s">"{\"subject\": "</span> <span class="o">+</span> <span class="n">subject</span> <span class="o">+</span> <span class="s">", \"body\": "</span> <span class="o">+</span> <span class="n">body</span> <span class="o">+</span> <span class="s">"}"</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="cm">/**
+ * Helper method to post data to a URL from the LDC Via service
+ * @param url
+ * @param data
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */</span>
+<span class="kd">private</span> <span class="n">String</span> <span class="nf">postURL</span><span class="p">(</span><span class="n">String</span> <span class="n">url</span><span class="o">,</span> <span class="n">String</span> <span class="n">data</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ClientProtocolException</span><span class="o">,</span> <span class="n">IOException</span> <span class="o">{</span>
+    <span class="n">CloseableHttpClient</span> <span class="n">httpclient</span> <span class="o">=</span> <span class="n">HttpClients</span><span class="o">.</span><span class="na">createDefault</span><span class="o">();</span>
+    <span class="n">HttpPut</span> <span class="n">httppost</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HttpPost</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">baseurl</span> <span class="o">+</span> <span class="n">url</span><span class="o">);</span>
+  <span class="n">StringEntity</span> <span class="n">input</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringEntity</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
+    <span class="n">input</span><span class="o">.</span><span class="na">setContentType</span><span class="o">(</span><span class="s">"application/json"</span><span class="o">);</span>
+    <span class="n">httppost</span><span class="o">.</span><span class="na">setEntity</span><span class="o">(</span><span class="n">input</span><span class="o">);</span>
+    <span class="c1">// Create a custom response handler</span>
+    <span class="n">ResponseHandler</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">responseHandler</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ResponseHandler</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;()</span> <span class="o">{</span>
+
+        <span class="kd">public</span> <span class="n">String</span> <span class="n">handleResponse</span><span class="o">(</span><span class="kd">final</span> <span class="n">HttpResponse</span> <span class="n">response</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ClientProtocolException</span><span class="o">,</span> <span class="n">IOException</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">status</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">getStatusLine</span><span class="o">().</span><span class="na">getStatusCode</span><span class="o">();</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">status</span> <span class="o">&gt;=</span> <span class="mi">200</span> <span class="o">&amp;&amp;</span> <span class="n">status</span> <span class="o">&lt;</span> <span class="mi">300</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">HttpEntity</span> <span class="n">entity</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">getEntity</span><span class="o">();</span>
+                <span class="k">return</span> <span class="n">entity</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">?</span> <span class="n">EntityUtils</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">entity</span><span class="o">)</span> <span class="o">:</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="n">ClientProtocolException</span><span class="o">(</span><span class="s">"Unexpected response status: "</span> <span class="o">+</span> <span class="n">status</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+
+    <span class="o">};</span>
+    <span class="k">return</span> <span class="n">httpclient</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="n">httppost</span><span class="o">,</span> <span class="n">responseHandler</span><span class="o">);</span>
+<span class="o">}</span>
 </code></pre>
 <pre><code class="highlight javascript"><span class="c1">//Taken from our Discussion template</span>
 <span class="nx">disc</span><span class="p">.</span><span class="nx">saveMainTopic</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">unid</span><span class="p">)</span> <span class="p">{</span>
@@ -1351,7 +1755,69 @@ You must replace `INSERTYOURAPIKEYHERE` with your personal API key.
 <h2 id="delete-a-document">Delete a document</h2>
 
 <p>To delete a document, use this method. You must have the rights to update the document</p>
-<pre><code class="highlight java"><span class="c1">//TODO: We need sample code here</span>
+<pre><code class="highlight java"><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ldcvia</span><span class="o">.</span><span class="na">rest</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.Serializable</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.ArrayList</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Collections</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.apache.http.HttpEntity</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.HttpResponse</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.client.ClientProtocolException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.client.ResponseHandler</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.client.methods.HttpDelete</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.impl.client.CloseableHttpClient</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.impl.client.HttpClients</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.util.EntityUtils</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonJavaArray</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonJavaFactory</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonJavaObject</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonParser</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.xsp.extlib.util.ExtLibUtil</span><span class="o">;</span>
+
+<span class="cm">/**
+ * Get a list of databases that the current user has access to
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">deleteDocument</span><span class="p">(</span><span class="n">String</span> <span class="n">dbname</span><span class="o">,</span> <span class="n">String</span> <span class="n">collection</span><span class="o">,</span> <span class="n">String</span> <span class="n">unid</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ClientProtocolException</span><span class="o">,</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">JsonException</span><span class="o">{</span>
+    <span class="n">deleteURL</span><span class="o">(</span><span class="s">"/1.0/document/"</span> <span class="o">+</span> <span class="n">dbname</span> <span class="o">+</span> <span class="s">"/"</span> <span class="o">+</span> <span class="n">collection</span> <span class="o">+</span> <span class="s">"/"</span> <span class="o">+</span> <span class="n">unid</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="cm">/**
+ * Helper method to delete a URL from the LDC Via service
+ * @param url
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */</span>
+<span class="kd">private</span> <span class="n">String</span> <span class="nf">deleteURL</span><span class="p">(</span><span class="n">String</span> <span class="n">url</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ClientProtocolException</span><span class="o">,</span> <span class="n">IOException</span> <span class="o">{</span>
+    <span class="n">CloseableHttpClient</span> <span class="n">httpclient</span> <span class="o">=</span> <span class="n">HttpClients</span><span class="o">.</span><span class="na">createDefault</span><span class="o">();</span>
+    <span class="n">HttpDelete</span> <span class="n">httpdelete</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HttpDelete</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">baseurl</span> <span class="o">+</span> <span class="n">url</span><span class="o">);</span>
+
+    <span class="c1">// Create a custom response handler</span>
+    <span class="n">ResponseHandler</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">responseHandler</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ResponseHandler</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;()</span> <span class="o">{</span>
+
+        <span class="kd">public</span> <span class="n">String</span> <span class="n">handleResponse</span><span class="o">(</span><span class="kd">final</span> <span class="n">HttpResponse</span> <span class="n">response</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ClientProtocolException</span><span class="o">,</span> <span class="n">IOException</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">status</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">getStatusLine</span><span class="o">().</span><span class="na">getStatusCode</span><span class="o">();</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">status</span> <span class="o">&gt;=</span> <span class="mi">200</span> <span class="o">&amp;&amp;</span> <span class="n">status</span> <span class="o">&lt;</span> <span class="mi">300</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">HttpEntity</span> <span class="n">entity</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">getEntity</span><span class="o">();</span>
+                <span class="k">return</span> <span class="n">entity</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">?</span> <span class="n">EntityUtils</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">entity</span><span class="o">)</span> <span class="o">:</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="n">ClientProtocolException</span><span class="o">(</span><span class="s">"Unexpected response status: "</span> <span class="o">+</span> <span class="n">status</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+
+    <span class="o">};</span>
+    <span class="n">httpget</span><span class="o">.</span><span class="na">addHeader</span><span class="o">(</span><span class="s">"apikey"</span><span class="o">,</span> <span class="s">"MYSECRETAPIKEY"</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">httpclient</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="n">httpget</span><span class="o">,</span> <span class="n">responseHandler</span><span class="o">);</span>
+<span class="o">}</span>
 </code></pre>
 <pre><code class="highlight javascript"><span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
   <span class="na">dataType</span><span class="p">:</span> <span class="s1">'json'</span><span class="p">,</span>
@@ -1474,7 +1940,69 @@ You must replace `INSERTYOURAPIKEYHERE` with your personal API key.
 <h2 id="delete-a-file-attachment">Delete a file attachment</h2>
 
 <p>To delete a file attachment, use this method. You must have the rights to update the document to which the file is associated</p>
-<pre><code class="highlight java"><span class="c1">//TODO: We need sample code here</span>
+<pre><code class="highlight java"><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ldcvia</span><span class="o">.</span><span class="na">rest</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.Serializable</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.ArrayList</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Collections</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.apache.http.HttpEntity</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.HttpResponse</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.client.ClientProtocolException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.client.ResponseHandler</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.client.methods.HttpDelete</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.impl.client.CloseableHttpClient</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.impl.client.HttpClients</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.util.EntityUtils</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonJavaArray</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonJavaFactory</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonJavaObject</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonParser</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.xsp.extlib.util.ExtLibUtil</span><span class="o">;</span>
+
+<span class="cm">/**
+ * Get a list of databases that the current user has access to
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">deleteAttachment</span><span class="p">(</span><span class="n">String</span> <span class="n">dbname</span><span class="o">,</span> <span class="n">String</span> <span class="n">collection</span><span class="o">,</span> <span class="n">String</span> <span class="n">unid</span><span class="o">,</span> <span class="n">String</span> <span class="n">filename</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ClientProtocolException</span><span class="o">,</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">JsonException</span><span class="o">{</span>
+    <span class="n">deleteURL</span><span class="o">(</span><span class="s">"/1.0/document/"</span> <span class="o">+</span> <span class="n">dbname</span> <span class="o">+</span> <span class="s">"/"</span> <span class="o">+</span> <span class="n">collection</span> <span class="o">+</span> <span class="s">"/"</span> <span class="o">+</span> <span class="n">unid</span> <span class="o">+</span> <span class="s">"/"</span> <span class="o">+</span> <span class="n">filename</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="cm">/**
+ * Helper method to delete a URL from the LDC Via service
+ * @param url
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */</span>
+<span class="kd">private</span> <span class="n">String</span> <span class="nf">deleteURL</span><span class="p">(</span><span class="n">String</span> <span class="n">url</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ClientProtocolException</span><span class="o">,</span> <span class="n">IOException</span> <span class="o">{</span>
+    <span class="n">CloseableHttpClient</span> <span class="n">httpclient</span> <span class="o">=</span> <span class="n">HttpClients</span><span class="o">.</span><span class="na">createDefault</span><span class="o">();</span>
+    <span class="n">HttpDelete</span> <span class="n">httpdelete</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HttpDelete</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">baseurl</span> <span class="o">+</span> <span class="n">url</span><span class="o">);</span>
+
+    <span class="c1">// Create a custom response handler</span>
+    <span class="n">ResponseHandler</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">responseHandler</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ResponseHandler</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;()</span> <span class="o">{</span>
+
+        <span class="kd">public</span> <span class="n">String</span> <span class="n">handleResponse</span><span class="o">(</span><span class="kd">final</span> <span class="n">HttpResponse</span> <span class="n">response</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ClientProtocolException</span><span class="o">,</span> <span class="n">IOException</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">status</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">getStatusLine</span><span class="o">().</span><span class="na">getStatusCode</span><span class="o">();</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">status</span> <span class="o">&gt;=</span> <span class="mi">200</span> <span class="o">&amp;&amp;</span> <span class="n">status</span> <span class="o">&lt;</span> <span class="mi">300</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">HttpEntity</span> <span class="n">entity</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">getEntity</span><span class="o">();</span>
+                <span class="k">return</span> <span class="n">entity</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">?</span> <span class="n">EntityUtils</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">entity</span><span class="o">)</span> <span class="o">:</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="n">ClientProtocolException</span><span class="o">(</span><span class="s">"Unexpected response status: "</span> <span class="o">+</span> <span class="n">status</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+
+    <span class="o">};</span>
+    <span class="n">httpget</span><span class="o">.</span><span class="na">addHeader</span><span class="o">(</span><span class="s">"apikey"</span><span class="o">,</span> <span class="s">"MYSECRETAPIKEY"</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">httpclient</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="n">httpget</span><span class="o">,</span> <span class="n">responseHandler</span><span class="o">);</span>
+<span class="o">}</span>
 </code></pre>
 <pre><code class="highlight javascript"><span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
   <span class="na">dataType</span><span class="p">:</span> <span class="s1">'json'</span><span class="p">,</span>
@@ -1542,7 +2070,73 @@ You must replace `INSERTYOURAPIKEYHERE` with your personal API key.
 <h2 id="get-meta-data-for-a-collection">Get Meta Data for a collection</h2>
 
 <p>To get a list of all fields that are in a collection, use this method.</p>
-<pre><code class="highlight java"><span class="c1">//TODO: Add sample</span>
+<pre><code class="highlight java"><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ldcvia</span><span class="o">.</span><span class="na">rest</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.Serializable</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.ArrayList</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Collections</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.apache.http.HttpEntity</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.HttpResponse</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.client.ClientProtocolException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.client.ResponseHandler</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.client.methods.HttpGet</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.impl.client.CloseableHttpClient</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.impl.client.HttpClients</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.util.EntityUtils</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonJavaArray</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonJavaFactory</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonJavaObject</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonParser</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.xsp.extlib.util.ExtLibUtil</span><span class="o">;</span>
+
+<span class="cm">/**
+ * Get a list of databases that the current user has access to
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */</span>
+<span class="kd">public</span> <span class="n">JsonJavaArray</span> <span class="nf">getMetaData</span><span class="p">(</span><span class="n">String</span> <span class="n">dbname</span><span class="o">,</span> <span class="n">String</span> <span class="n">collection</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ClientProtocolException</span><span class="o">,</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">JsonException</span><span class="o">{</span>
+    <span class="n">String</span> <span class="n">responseBody</span> <span class="o">=</span> <span class="n">loadURL</span><span class="o">(</span><span class="s">"/1.0/metadata/"</span> <span class="o">+</span> <span class="n">dbname</span> <span class="o">+</span> <span class="s">"/"</span> <span class="o">+</span> <span class="n">collection</span><span class="o">);</span>
+    <span class="n">JsonJavaFactory</span> <span class="n">factory</span> <span class="o">=</span> <span class="n">JsonJavaFactory</span><span class="o">.</span><span class="na">instanceEx</span><span class="o">;</span>
+    <span class="n">JsonJavaObject</span> <span class="n">json</span> <span class="o">=</span> <span class="o">(</span><span class="n">JsonJavaObject</span><span class="o">)</span> <span class="n">JsonParser</span><span class="o">.</span><span class="na">fromJson</span><span class="o">(</span><span class="n">factory</span><span class="o">,</span> <span class="n">responseBody</span><span class="o">);</span>
+
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="na">getAsArray</span><span class="o">(</span><span class="s">"fields"</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="cm">/**
+ * Helper method to request a URL from the LDC Via service
+ * @param url
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */</span>
+<span class="kd">private</span> <span class="n">String</span> <span class="nf">loadURL</span><span class="p">(</span><span class="n">String</span> <span class="n">url</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ClientProtocolException</span><span class="o">,</span> <span class="n">IOException</span> <span class="o">{</span>
+    <span class="n">CloseableHttpClient</span> <span class="n">httpclient</span> <span class="o">=</span> <span class="n">HttpClients</span><span class="o">.</span><span class="na">createDefault</span><span class="o">();</span>
+    <span class="n">HttpGet</span> <span class="n">httpget</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HttpGet</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">baseurl</span> <span class="o">+</span> <span class="n">url</span><span class="o">);</span>
+
+    <span class="c1">// Create a custom response handler</span>
+    <span class="n">ResponseHandler</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">responseHandler</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ResponseHandler</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;()</span> <span class="o">{</span>
+
+        <span class="kd">public</span> <span class="n">String</span> <span class="n">handleResponse</span><span class="o">(</span><span class="kd">final</span> <span class="n">HttpResponse</span> <span class="n">response</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ClientProtocolException</span><span class="o">,</span> <span class="n">IOException</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">status</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">getStatusLine</span><span class="o">().</span><span class="na">getStatusCode</span><span class="o">();</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">status</span> <span class="o">&gt;=</span> <span class="mi">200</span> <span class="o">&amp;&amp;</span> <span class="n">status</span> <span class="o">&lt;</span> <span class="mi">300</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">HttpEntity</span> <span class="n">entity</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">getEntity</span><span class="o">();</span>
+                <span class="k">return</span> <span class="n">entity</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">?</span> <span class="n">EntityUtils</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">entity</span><span class="o">)</span> <span class="o">:</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="n">ClientProtocolException</span><span class="o">(</span><span class="s">"Unexpected response status: "</span> <span class="o">+</span> <span class="n">status</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+
+    <span class="o">};</span>
+    <span class="n">httpget</span><span class="o">.</span><span class="na">addHeader</span><span class="o">(</span><span class="s">"apikey"</span><span class="o">,</span> <span class="s">"MYSECRETAPIKEY"</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">httpclient</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="n">httpget</span><span class="o">,</span> <span class="n">responseHandler</span><span class="o">);</span>
+<span class="o">}</span>
 </code></pre>
 <pre><code class="highlight javascript"><span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
   <span class="na">dataType</span><span class="p">:</span> <span class="s1">'json'</span><span class="p">,</span>
@@ -1626,7 +2220,72 @@ You must replace `INSERTYOURAPIKEYHERE` with your personal API key.
 <h2 id="update-meta-data-for-a-collection">Update Meta Data for a Collection</h2>
 
 <p>You can update meta data for a collection with this method. The most common use for this will be to enable and disable readers and authors fields, thus controlling document level security.</p>
-<pre><code class="highlight java"><span class="c1">//TODO: Add a sample</span>
+<pre><code class="highlight java"><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ldcvia</span><span class="o">.</span><span class="na">rest</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.Serializable</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.ArrayList</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Collections</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.apache.http.HttpEntity</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.HttpResponse</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.client.ClientProtocolException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.client.ResponseHandler</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.client.methods.HttpPost</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.impl.client.CloseableHttpClient</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.impl.client.HttpClients</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.util.EntityUtils</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.http.entity.StringEntity</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonJavaArray</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonJavaFactory</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonJavaObject</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.commons.util.io.json.JsonParser</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.ibm.xsp.extlib.util.ExtLibUtil</span><span class="o">;</span>
+
+<span class="cm">/**
+ * Get the API key for the user
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">updateMetaDataField</span><span class="p">(</span><span class="n">String</span> <span class="n">dbname</span><span class="o">,</span> <span class="n">String</span> <span class="n">collection</span><span class="o">,</span> <span class="n">String</span> <span class="n">fieldname</span><span class="o">,</span> <span class="n">String</span> <span class="n">fieldtype</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ClientProtocolException</span><span class="o">,</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">JsonException</span><span class="o">{</span>
+    <span class="n">String</span> <span class="n">responseBody</span> <span class="o">=</span> <span class="n">postURL</span><span class="o">(</span><span class="s">"/1.0/metdata/"</span> <span class="o">+</span> <span class="n">dbname</span> <span class="o">+</span> <span class="s">"/"</span> <span class="o">+</span> <span class="n">collection</span> <span class="o">+</span> <span class="s">", "</span><span class="o">{</span><span class="err">\</span><span class="s">"fields\": [{\"fieldname\": \""</span> <span class="o">+</span> <span class="n">fieldname</span> <span class="o">+</span> <span class="s">"\", \"fieldtype\": \""</span> <span class="o">+</span> <span class="n">fieldtype</span> <span class="o">+</span> <span class="s">"\"}]}"</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="cm">/**
+ * Helper method to post data to a URL from the LDC Via service
+ * @param url
+ * @param data
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */</span>
+<span class="kd">private</span> <span class="n">String</span> <span class="nf">postURL</span><span class="p">(</span><span class="n">String</span> <span class="n">url</span><span class="o">,</span> <span class="n">String</span> <span class="n">data</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ClientProtocolException</span><span class="o">,</span> <span class="n">IOException</span> <span class="o">{</span>
+    <span class="n">CloseableHttpClient</span> <span class="n">httpclient</span> <span class="o">=</span> <span class="n">HttpClients</span><span class="o">.</span><span class="na">createDefault</span><span class="o">();</span>
+    <span class="n">HttpPost</span> <span class="n">httppost</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HttpPost</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">baseurl</span> <span class="o">+</span> <span class="n">url</span><span class="o">);</span>
+  <span class="n">StringEntity</span> <span class="n">input</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringEntity</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
+    <span class="n">input</span><span class="o">.</span><span class="na">setContentType</span><span class="o">(</span><span class="s">"application/json"</span><span class="o">);</span>
+    <span class="n">httppost</span><span class="o">.</span><span class="na">setEntity</span><span class="o">(</span><span class="n">input</span><span class="o">);</span>
+    <span class="c1">// Create a custom response handler</span>
+    <span class="n">ResponseHandler</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">responseHandler</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ResponseHandler</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;()</span> <span class="o">{</span>
+
+        <span class="kd">public</span> <span class="n">String</span> <span class="n">handleResponse</span><span class="o">(</span><span class="kd">final</span> <span class="n">HttpResponse</span> <span class="n">response</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ClientProtocolException</span><span class="o">,</span> <span class="n">IOException</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">status</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">getStatusLine</span><span class="o">().</span><span class="na">getStatusCode</span><span class="o">();</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">status</span> <span class="o">&gt;=</span> <span class="mi">200</span> <span class="o">&amp;&amp;</span> <span class="n">status</span> <span class="o">&lt;</span> <span class="mi">300</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">HttpEntity</span> <span class="n">entity</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">getEntity</span><span class="o">();</span>
+                <span class="k">return</span> <span class="n">entity</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">?</span> <span class="n">EntityUtils</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">entity</span><span class="o">)</span> <span class="o">:</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="n">ClientProtocolException</span><span class="o">(</span><span class="s">"Unexpected response status: "</span> <span class="o">+</span> <span class="n">status</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+
+    <span class="o">};</span>
+    <span class="k">return</span> <span class="n">httpclient</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="n">httppost</span><span class="o">,</span> <span class="n">responseHandler</span><span class="o">);</span>
+<span class="o">}</span>
 </code></pre>
 <pre><code class="highlight javascript"><span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span>
   <span class="s2">"fields"</span><span class="p">:[</span>
