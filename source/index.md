@@ -502,7 +502,7 @@ private String postURL(String url, String data) throws ClientProtocolException, 
 		}
 
 	};
-	httpget.addHeader("apikey", "MYSECRETAPIKEY");
+	httppost.addHeader("apikey", "MYSECRETAPIKEY");
 	return httpclient.execute(httppost, responseHandler);
 }
 ```
@@ -1006,7 +1006,7 @@ Search queries are built up using an array of JSON objects. You can search for e
 
 Keywords that you can use to search for data include:
 
-Keyword | Function
+Operator | Function
 ------- | --------
 contains | used to search a field to see if it contains the value being searched for
 equals | used to find a field that is an exact match for the value being searched for
@@ -1043,8 +1043,12 @@ import com.ibm.commons.util.io.json.JsonParser;
 import com.ibm.xsp.extlib.util.ExtLibUtil;
 
 /**
- * Get the API key for the user
+ * Search against a field
  *  
+ * @param dbname
+ * @param collection
+ * @param fieldname
+ * @param query
  * @return
  * @throws ClientProtocolException
  * @throws IOException
@@ -1086,6 +1090,7 @@ private String postURL(String url, String data) throws ClientProtocolException, 
 		}
 
 	};
+  httppost.addHeader("apikey", "MYSECRETAPIKEY");
 	return httpclient.execute(httppost, responseHandler);
 }
 ```
@@ -1145,7 +1150,7 @@ $.ajax({
 ```
 
 ### HTTP Request
-`POST https://ldcvia.com/1.0/collections/:database/:collectionname`
+`POST https://ldcvia.com/1.0/search/:database/:collectionname`
 
 ### URL Parameters
 
@@ -1304,8 +1309,12 @@ import com.ibm.xsp.extlib.util.ExtLibUtil;
 import java.util.Date;
 
 /**
- * Get the API key for the user
+ * Create a new document
  *  
+ * @param dbname
+ * @param collection
+ * @param subject
+ * @param body
  * @return
  * @throws ClientProtocolException
  * @throws IOException
@@ -1344,7 +1353,8 @@ private String putURL(String url, String data) throws ClientProtocolException, I
 		}
 
 	};
-	return httpclient.execute(httppust, responseHandler);
+  httppost.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httppost, responseHandler);
 }
 ```
 
@@ -1453,8 +1463,13 @@ import com.ibm.commons.util.io.json.JsonParser;
 import com.ibm.xsp.extlib.util.ExtLibUtil;
 
 /**
- * Get the API key for the user
- *  
+ * Update a document
+ *
+ * @param dbname
+ * @param collection
+ * @param unid
+ * @param subject
+ * @param body
  * @return
  * @throws ClientProtocolException
  * @throws IOException
@@ -1492,6 +1507,7 @@ private String postURL(String url, String data) throws ClientProtocolException, 
 		}
 
 	};
+  httppost.addHeader("apikey", "MYSECRETAPIKEY");
 	return httpclient.execute(httppost, responseHandler);
 }
 ```
@@ -2009,8 +2025,12 @@ import com.ibm.commons.util.io.json.JsonParser;
 import com.ibm.xsp.extlib.util.ExtLibUtil;
 
 /**
- * Get the API key for the user
+ * Update Meta Data Field
  *  
+ * @param dbname
+ * @dbname collection
+ * @param fieldname
+ * @param fieldtype
  * @return
  * @throws ClientProtocolException
  * @throws IOException
@@ -2048,6 +2068,7 @@ private String postURL(String url, String data) throws ClientProtocolException, 
 		}
 
 	};
+  httppost.addHeader("apikey", "MYSECRETAPIKEY");
 	return httpclient.execute(httppost, responseHandler);
 }
 ```
@@ -2100,7 +2121,71 @@ Be aware that if you have set any readers and authors fields in the meta data th
 Because of this potential, you must be a super user or administrator to run this method.
 
 ```java
-//TODO: Add a sample
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Reset the meta data for a collection
+ *  
+ * @param dbname
+ * @param collection
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public void resetMetaData(String dbname, String collection) throws ClientProtocolException, IOException, JsonException{
+	String responseBody = loadURL("/1.0/resetmetadata/" + dbname + "/" + collection);
+}
+
+/**
+ * Helper method to request a URL from the LDC Via service
+ * @param url
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String loadURL(String url) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpGet httpget = new HttpGet(this.baseurl + url);
+
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	httpget.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httpget, responseHandler);
+}
 ```
 
 ```javascript
@@ -2146,7 +2231,73 @@ You can get either your own details of the details of a different user within yo
 ## Get your own user details
 
 ```java
-//TODO: Add Sample
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Get the current user's details
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public String getUserEmail() throws ClientProtocolException, IOException, JsonException{
+	String responseBody = loadURL("/1.0/userdetails");
+	JsonJavaFactory factory = JsonJavaFactory.instanceEx;
+	JsonJavaObject json = (JsonJavaObject) JsonParser.fromJson(factory, responseBody);
+
+	return json.getAsString("email");
+}
+
+/**
+ * Helper method to request a URL from the LDC Via service
+ * @param url
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String loadURL(String url) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpGet httpget = new HttpGet(this.baseurl + url);
+
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	httpget.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httpget, responseHandler);
+}
 ```
 
 ```javascript
@@ -2205,7 +2356,74 @@ $.ajax({
 The get another user's details, use this method. If you are a super user or the same user as the email address, you will be able to get the API Key, otherwise that will not be returned.
 
 ```java
-//TODO: Add Sample
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Get list of databases visible to another user
+ *  
+ * @param email
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public JsonJavaArray getUserDatabases(String email) throws ClientProtocolException, IOException, JsonException{
+	String responseBody = loadURL("/1.0/userdetails/" + email);
+	JsonJavaFactory factory = JsonJavaFactory.instanceEx;
+	JsonJavaObject json = (JsonJavaObject) JsonParser.fromJson(factory, responseBody);
+
+	return json.getAsArray("databases");
+}
+
+/**
+ * Helper method to request a URL from the LDC Via service
+ * @param url
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String loadURL(String url) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpGet httpget = new HttpGet(this.baseurl + url);
+
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	httpget.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httpget, responseHandler);
+}
 ```
 
 ```javascript
@@ -2272,7 +2490,96 @@ In addition to retrieving user details, you can also create users via the API. A
 Once the API has validated the request, for each user two objects will be created: a User and an Account (the two elements maintain a 1:1 relationship, with the Account controlling a user's ability to log in). In addition, all users created will be linked to the passed-in organisation.
 
 ```java
-//TODO: Add Sample
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.apache.http.entity.StringEntity;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Create a new user
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public void createNewUser() throws ClientProtocolException, IOException, JsonException{
+  String data = "{" +
+   "\"organisation\": \"548598c6b283ccf00e5edf43\"," +
+   "\"users\": [" +
+   "{" +
+   "\"email\": \"fbloggs@acme.com\"," +
+   "\"firstname\": \"Fred\"," +
+   "\"lastname\": \"Bloggs\"," +
+   "\"notesnames\": [" +
+   "{" +
+   "\"notesname\": \"test01/acme\"" +
+   "}," +
+   "{" +
+   "\"notesname\": \"user01/acme\"" +
+   "}" +
+   "]" +
+   "}," +
+   "{" +
+   "\"email\": \"jh@acme.com\"," +
+   "\"firstname\": \"Jeremy\"," +
+   "\"lastname\": \"Hardy\"" +
+   "}" +
+   "]" +
+  "}";
+	postURL("/1.0/users", data);
+}
+
+/**
+ * Helper method to post data to a URL from the LDC Via service
+ * @param url
+ * @param data
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String postURL(String url, String data) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpPut httppost = new HttpPost(this.baseurl + url);
+  StringEntity input = new StringEntity(data);
+	input.setContentType("application/json");
+	httppost.setEntity(input);
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+  httppost.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httppost, responseHandler);
+}
 ```
 
 ```javascript
@@ -2330,7 +2637,74 @@ $.ajax({
 The update another user's details, use this method. You must be a super user to use this method.
 
 ```java
-//TODO: Add Sample
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.apache.http.entity.StringEntity;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Update a user
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public void updateUser(String email) throws ClientProtocolException, IOException, JsonException{
+  String data = "{\r\n  \"notesnames\":\r\n    [\r\n      {\"notesname\": \"CN=Fred Blogs/O=Londc\"},\r\n      {\"notesname\": \"Fred Blogs/Londc\"},\r\n      {\"notesname\": \"Fred Blogs\"},\r\n      {\"notesname\": \"*/Londc\"},\r\n    ]\r\n}";
+	postURL("/1.0/userdetails/" + email, data);
+}
+
+/**
+ * Helper method to post data to a URL from the LDC Via service
+ * @param url
+ * @param data
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String postURL(String url, String data) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpPut httppost = new HttpPost(this.baseurl + url);
+  StringEntity input = new StringEntity(data);
+	input.setContentType("application/json");
+	httppost.setEntity(input);
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+  httppost.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httppost, responseHandler);
+}
 ```
 
 ```javascript
@@ -2379,7 +2753,69 @@ Parameter | Description
 This method is available for super users to remove another user (you cannot delete yourself!)
 
 ```java
-//TODO: Add Sample
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Delete a user
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public void deleteUser(String email) throws ClientProtocolException, IOException, JsonException{
+	deleteURL("/1.0/userdetails/" + email);
+}
+
+/**
+ * Helper method to delete a URL from the LDC Via service
+ * @param url
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String deleteURL(String url) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpDelete httpdelete = new HttpDelete(this.baseurl + url);
+
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	httpget.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httpget, responseHandler);
+}
 ```
 
 ```javascript
@@ -2415,7 +2851,73 @@ Parameter | Description
 
 ## Get list of groups in organisation
 ```java
-//TODO: Add Sample
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Get list of groups in organisation
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public JsonJavaArray getGroups() throws ClientProtocolException, IOException, JsonException{
+	String responseBody = loadURL("/1.0/groups");
+	JsonJavaFactory factory = JsonJavaFactory.instanceEx;
+	JsonJavaArray json = (JsonJavaArray) JsonParser.fromJson(factory, responseBody);
+
+	return json;
+}
+
+/**
+ * Helper method to request a URL from the LDC Via service
+ * @param url
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String loadURL(String url) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpGet httpget = new HttpGet(this.baseurl + url);
+
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	httpget.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httpget, responseHandler);
+}
 ```
 
 ```javascript
@@ -2444,7 +2946,81 @@ $.ajax({
 
 ## Add multiple users to group
 ```java
-//TODO: Add Sample
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.apache.http.entity.StringEntity;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Add multiple users to a group
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public void addUsersToGroup(String group, String[] users) throws ClientProtocolException, IOException, JsonException{
+  var data = "{\"groupname\": \"" + group"\", \"emails\": [";
+  for (int i=0; i<users.length; i++){
+    if (i > 0){
+      data += ", ";
+    }
+    data += "\"" + users[i] + "\"";
+  }
+  data += "]}"
+	postURL("/1.0/groups", data);
+}
+
+/**
+ * Helper method to post data to a URL from the LDC Via service
+ * @param url
+ * @param data
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String postURL(String url, String data) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpPut httppost = new HttpPost(this.baseurl + url);
+  StringEntity input = new StringEntity(data);
+	input.setContentType("application/json");
+	httppost.setEntity(input);
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+  httppost.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httppost, responseHandler);
+}
 ```
 
 ```javascript
@@ -2477,7 +3053,69 @@ $.ajax({
 
 ## Add single user to group
 ```java
-//TODO: Add Sample
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Add user to a group
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public void addUserToGroup(String group, String user) throws ClientProtocolException, IOException, JsonException{
+	String responseBody = loadURL("/1.0/groups/" + user + "/" + group);
+}
+
+/**
+ * Helper method to request a URL from the LDC Via service
+ * @param url
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String loadURL(String url) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpGet httpget = new HttpGet(this.baseurl + url);
+
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	httpget.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httpget, responseHandler);
+}
 ```
 
 ```javascript
@@ -2508,7 +3146,69 @@ Parameter | Description
 
 ## Remove user from group
 ```java
-//TODO: Add Sample
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Remove user from a group
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public void removeUserFromGroup(String group, String user) throws ClientProtocolException, IOException, JsonException{
+	deleteURL("/1.0/groups/" + user + "/" + group);
+}
+
+/**
+ * Helper method to delete a URL from the LDC Via service
+ * @param url
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String deleteURL(String url) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpDelete httpdelete = new HttpDelete(this.baseurl + url);
+
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	httpget.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httpget, responseHandler);
+}
 ```
 
 ```javascript
@@ -2539,7 +3239,73 @@ Parameter | Description
 
 ## Get Members of Group
 ```java
-//TODO: Add Sample
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Get Members Of a Group
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public JsonJavaArray getGroupMembers(String group) throws ClientProtocolException, IOException, JsonException{
+	String responseBody = loadURL("/1.0/groups/" + group);
+  JsonJavaFactory factory = JsonJavaFactory.instanceEx;
+  JsonJavaArray json = (JsonJavaArray) JsonParser.fromJson(factory, responseBody);
+
+  return json;
+}
+
+/**
+ * Helper method to request a URL from the LDC Via service
+ * @param url
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String loadURL(String url) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpGet httpget = new HttpGet(this.baseurl + url);
+
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	httpget.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httpget, responseHandler);
+}
 ```
 
 ```javascript
@@ -2573,7 +3339,69 @@ Parameter | Description
 
 ## Remove Group
 ```java
-//TODO: Add Sample
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Remove a group
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public void removeGroup(String group) throws ClientProtocolException, IOException, JsonException{
+	deleteURL("/1.0/groups/" + group);
+}
+
+/**
+ * Helper method to delete a URL from the LDC Via service
+ * @param url
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String deleteURL(String url) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpDelete httpdelete = new HttpDelete(this.baseurl + url);
+
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	httpget.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httpget, responseHandler);
+}
 ```
 
 ```javascript
@@ -2603,7 +3431,73 @@ Parameter | Description
 
 ## List all users in organisation
 ```java
-//TODO: Add Sample
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Get A List of All Users in Organisation
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public JsonJavaArray getAllUsers() throws ClientProtocolException, IOException, JsonException{
+	String responseBody = loadURL("/1.0/users");
+  JsonJavaFactory factory = JsonJavaFactory.instanceEx;
+  JsonJavaArray json = (JsonJavaArray) JsonParser.fromJson(factory, responseBody);
+
+  return json;
+}
+
+/**
+ * Helper method to request a URL from the LDC Via service
+ * @param url
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String loadURL(String url) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpGet httpget = new HttpGet(this.baseurl + url);
+
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	httpget.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httpget, responseHandler);
+}
 ```
 
 ```javascript
@@ -2631,7 +3525,73 @@ $.ajax({
 
 ## Add user to database
 ```java
-//TODO: Add Sample
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Add User To Database
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public JsonJavaArray addUserToDatabase(String email, String dbname) throws ClientProtocolException, IOException, JsonException{
+	String responseBody = loadURL("/1.0/userdetails/" + email + "/" + dbname);
+  JsonJavaFactory factory = JsonJavaFactory.instanceEx;
+  JsonJavaArray json = (JsonJavaArray) JsonParser.fromJson(factory, responseBody);
+
+  return json;
+}
+
+/**
+ * Helper method to request a URL from the LDC Via service
+ * @param url
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String loadURL(String url) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpGet httpget = new HttpGet(this.baseurl + url);
+
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	httpget.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httpget, responseHandler);
+}
 ```
 
 ```javascript
@@ -2662,7 +3622,69 @@ Parameter | Description
 
 ## Remove user from database
 ```java
-//TODO: Add Sample
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Remove user from database
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public void removeUserFromDatabase(String dbname, String email) throws ClientProtocolException, IOException, JsonException{
+	deleteURL("/1.0/userdetails/" + email + "/" + dbname);
+}
+
+/**
+ * Helper method to delete a URL from the LDC Via service
+ * @param url
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String deleteURL(String url) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpDelete httpdelete = new HttpDelete(this.baseurl + url);
+
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	httpget.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httpget, responseHandler);
+}
 ```
 
 ```javascript
@@ -2700,7 +3722,73 @@ We provide several extra services that act as utilities to make developing appli
 Similar in concept to an @DBColumn in Notes, this will return a unique list of values from a field in a collection
 
 ```java
-//TODO: Add Sample
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Get A List of Distinct values from a field in a collection
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public JsonJavaArray getList(String dbname, String collection, String fieldname) throws ClientProtocolException, IOException, JsonException{
+	String responseBody = loadURL("/1.0/list/" + dbname + "/" + collection + "/" + fieldname);
+  JsonJavaFactory factory = JsonJavaFactory.instanceEx;
+  JsonJavaArray json = (JsonJavaArray) JsonParser.fromJson(factory, responseBody);
+
+  return json;
+}
+
+/**
+ * Helper method to request a URL from the LDC Via service
+ * @param url
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String loadURL(String url) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpGet httpget = new HttpGet(this.baseurl + url);
+
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	httpget.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httpget, responseHandler);
+}
 ```
 
 ```javascript
@@ -2739,7 +3827,73 @@ Parameter | Description
 Given a database, collection name and document id, this method will return to you a list of collection names and document ids that are responses to this document.
 
 ```java
-//TODO: Add Sample
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Get A List of Response Documents to a Document
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public JsonJavaArray getResponses(String dbname, String collection, String unid) throws ClientProtocolException, IOException, JsonException{
+	String responseBody = loadURL("/1.0/responses/" + dbname + "/" + collection + "/" + unid);
+  JsonJavaFactory factory = JsonJavaFactory.instanceEx;
+  JsonJavaArray json = (JsonJavaArray) JsonParser.fromJson(factory, responseBody);
+
+  return json;
+}
+
+/**
+ * Helper method to request a URL from the LDC Via service
+ * @param url
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String loadURL(String url) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpGet httpget = new HttpGet(this.baseurl + url);
+
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	httpget.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httpget, responseHandler);
+}
 ```
 
 ```javascript
@@ -2887,7 +4041,73 @@ start | 0 | The starting position in the view
 Given a database, collection, document and field name, this service will parse the field (it must be a rich text field) and return details of any doclinks that are contained within.
 
 ```java
-//TODO: Add Sample
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Get the details of any doclinks in a rich text field migrated from Domino
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public JsonJavaArray getDocLinks(String dbname, String collection, String unid, String fieldname) throws ClientProtocolException, IOException, JsonException{
+	String responseBody = loadURL("/1.0/doclink/" + dbname + "/" + collection + "/" + unid + "/" + fieldname);
+  JsonJavaFactory factory = JsonJavaFactory.instanceEx;
+  JsonJavaArray json = (JsonJavaArray) JsonParser.fromJson(factory, responseBody);
+
+  return json;
+}
+
+/**
+ * Helper method to request a URL from the LDC Via service
+ * @param url
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String loadURL(String url) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpGet httpget = new HttpGet(this.baseurl + url);
+
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	httpget.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httpget, responseHandler);
+}
 ```
 
 ```javascript
@@ -2945,7 +4165,73 @@ Every single operation against our API is recorded in our logs. We provide a set
 When you want to get a count of activity for your entire environment, use the /activity service. If you want to get detailed logs of activity, then you will need to provide either a database, a database and collection or a database, collection and document id. In all cases, if you issue a GET request then you will be returned all records for that scope.
 
 ```java
-//TODO: Add Sample
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Get A List of Response Documents to a Document
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public int getDBActivity(String dbname) throws ClientProtocolException, IOException, JsonException{
+	String responseBody = loadURL("/1.0/activity");
+  JsonJavaFactory factory = JsonJavaFactory.instanceEx;
+  JsonJavaObject json = (JsonJavaObject) JsonParser.fromJson(factory, responseBody);
+
+  return json.getInt(dbname);
+}
+
+/**
+ * Helper method to request a URL from the LDC Via service
+ * @param url
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String loadURL(String url) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpGet httpget = new HttpGet(this.baseurl + url);
+
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	httpget.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httpget, responseHandler);
+}
 ```
 
 ```javascript
@@ -2981,7 +4267,84 @@ If you want to further filter the logs to a specific date range or only contain 
 When you want to get a count of activity for your entire environment, use the /activity service. If you want to get detailed logs of activity, then you will need to provide either a database, a database and collection or a database, collection and document id. In all cases, if you issue a GET request then you will be returned all records for that scope.
 
 ```java
-//TODO: Add Sample
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.apache.http.entity.StringEntity;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Search Activity Logs
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public int searchLogs(String dbname) throws ClientProtocolException, IOException, JsonException{
+  String data = "{" +
+    "\"startdate\": {\"year\": 2014, \"month\": 6, \"day\": 1}," +
+    "\"enddate\": {\"year\": 2014, \"month\": 7, \"day\": 1}," +
+    "\"filters\": [" +
+    "  {\"operator\": \"equals\", \"field\": \"level\", \"value\": \"info\"}" +
+    "]" +
+  "}";
+	postURL("/1.0/activity", data);
+  JsonJavaFactory factory = JsonJavaFactory.instanceEx;
+  JsonJavaObject json = (JsonJavaObject) JsonParser.fromJson(factory, responseBody);
+
+  return json.getInt(dbname);
+}
+
+/**
+ * Helper method to post data to a URL from the LDC Via service
+ * @param url
+ * @param data
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String postURL(String url, String data) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpPut httppost = new HttpPost(this.baseurl + url);
+  StringEntity input = new StringEntity(data);
+	input.setContentType("application/json");
+	httppost.setEntity(input);
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+  httppost.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httppost, responseHandler);
+}
 ```
 
 ```javascript
@@ -3024,7 +4387,73 @@ $.ajax({
 To filter logs at a database level, add the database name to the URL structure
 
 ```java
-//TODO: Add Sample
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Get The most recent 30 logs for a database
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public JsonJavaArray getDBActivity(String dbname) throws ClientProtocolException, IOException, JsonException{
+	String responseBody = loadURL("/1.0/activity/" + dbname);
+  JsonJavaFactory factory = JsonJavaFactory.instanceEx;
+  JsonJavaObject json = (JsonJavaObject) JsonParser.fromJson(factory, responseBody);
+
+  return json.getArray(docs);
+}
+
+/**
+ * Helper method to request a URL from the LDC Via service
+ * @param url
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String loadURL(String url) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpGet httpget = new HttpGet(this.baseurl + url);
+
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	httpget.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httpget, responseHandler);
+}
 ```
 
 ```javascript
@@ -3092,7 +4521,84 @@ start | 0 | the position in the results to start at
 To further filter logs at a database level, add the database name to the URL structure and then POST whatever filters are required
 
 ```java
-//TODO: Add Sample
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.apache.http.entity.StringEntity;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Search Activity Logs
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public JsonJavaArray searchLogs(String dbname) throws ClientProtocolException, IOException, JsonException{
+  String data = "{" +
+    "\"startdate\": {\"year\": 2014, \"month\": 6, \"day\": 1}," +
+    "\"enddate\": {\"year\": 2014, \"month\": 7, \"day\": 1}," +
+    "\"filters\": [" +
+    "  {\"operator\": \"equals\", \"field\": \"level\", \"value\": \"info\"}" +
+    "]" +
+  "}";
+	postURL("/1.0/activity/" + dbname, data);
+  JsonJavaFactory factory = JsonJavaFactory.instanceEx;
+  JsonJavaObject json = (JsonJavaObject) JsonParser.fromJson(factory, responseBody);
+
+  return json.getArray("docs");
+}
+
+/**
+ * Helper method to post data to a URL from the LDC Via service
+ * @param url
+ * @param data
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String postURL(String url, String data) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpPut httppost = new HttpPost(this.baseurl + url);
+  StringEntity input = new StringEntity(data);
+	input.setContentType("application/json");
+	httppost.setEntity(input);
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+  httppost.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httppost, responseHandler);
+}
 ```
 
 ```javascript
@@ -3167,7 +4673,73 @@ start | 0 | the position in the results to start at
 To filter logs at a collection level, add the database name and collection name to the URL structure
 
 ```java
-//TODO: Add Sample
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Get The most recent 30 logs for a collection
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public JsonJavaArray getCollectionActivity(String dbname, String collection) throws ClientProtocolException, IOException, JsonException{
+	String responseBody = loadURL("/1.0/activity/" + dbname + "/" + collection);
+  JsonJavaFactory factory = JsonJavaFactory.instanceEx;
+  JsonJavaObject json = (JsonJavaObject) JsonParser.fromJson(factory, responseBody);
+
+  return json.getArray(docs);
+}
+
+/**
+ * Helper method to request a URL from the LDC Via service
+ * @param url
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String loadURL(String url) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpGet httpget = new HttpGet(this.baseurl + url);
+
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	httpget.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httpget, responseHandler);
+}
 ```
 
 ```javascript
@@ -3235,7 +4807,84 @@ start | 0 | the position in the results to start at
 To further filter logs at a collection level, add the database name and collection name to the URL structure and then POST whatever filters are required
 
 ```java
-//TODO: Add Sample
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.apache.http.entity.StringEntity;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Search Collection Activity Logs
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public JsonJavaArray searchCollectionLogs(String dbname, String collection) throws ClientProtocolException, IOException, JsonException{
+  String data = "{" +
+    "\"startdate\": {\"year\": 2014, \"month\": 6, \"day\": 1}," +
+    "\"enddate\": {\"year\": 2014, \"month\": 7, \"day\": 1}," +
+    "\"filters\": [" +
+    "  {\"operator\": \"equals\", \"field\": \"level\", \"value\": \"info\"}" +
+    "]" +
+  "}";
+	postURL("/1.0/activity/" + dbname + "/" + collection, data);
+  JsonJavaFactory factory = JsonJavaFactory.instanceEx;
+  JsonJavaObject json = (JsonJavaObject) JsonParser.fromJson(factory, responseBody);
+
+  return json.getArray("docs");
+}
+
+/**
+ * Helper method to post data to a URL from the LDC Via service
+ * @param url
+ * @param data
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String postURL(String url, String data) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpPut httppost = new HttpPost(this.baseurl + url);
+  StringEntity input = new StringEntity(data);
+	input.setContentType("application/json");
+	httppost.setEntity(input);
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+  httppost.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httppost, responseHandler);
+}
 ```
 
 ```javascript
@@ -3310,7 +4959,73 @@ start | 0 | the position in the results to start at
 To filter logs at a document level, add the database name, collection name and document unid to the URL structure
 
 ```java
-//TODO: Add Sample
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Get The most recent 30 logs for a document
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public JsonJavaArray getDocActivity(String dbname, String collection, String unid) throws ClientProtocolException, IOException, JsonException{
+	String responseBody = loadURL("/1.0/activity/" + dbname + "/" + collection + "/" + unid);
+  JsonJavaFactory factory = JsonJavaFactory.instanceEx;
+  JsonJavaObject json = (JsonJavaObject) JsonParser.fromJson(factory, responseBody);
+
+  return json.getArray(docs);
+}
+
+/**
+ * Helper method to request a URL from the LDC Via service
+ * @param url
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String loadURL(String url) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpGet httpget = new HttpGet(this.baseurl + url);
+
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	httpget.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httpget, responseHandler);
+}
 ```
 
 ```javascript
@@ -3378,7 +5093,84 @@ start | 0 | the position in the results to start at
 To further filter logs at a document level, add the database name, collection name and document unid to the URL structure and then POST whatever filters are required
 
 ```java
-//TODO: Add Sample
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.apache.http.entity.StringEntity;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Search Document Activity Logs
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public JsonJavaArray searchDocumentLogs(String dbname, String collection, String unid) throws ClientProtocolException, IOException, JsonException{
+  String data = "{" +
+    "\"startdate\": {\"year\": 2014, \"month\": 6, \"day\": 1}," +
+    "\"enddate\": {\"year\": 2014, \"month\": 7, \"day\": 1}," +
+    "\"filters\": [" +
+    "  {\"operator\": \"equals\", \"field\": \"level\", \"value\": \"info\"}" +
+    "]" +
+  "}";
+	postURL("/1.0/activity/" + dbname + "/" + collection + "/" + unid, data);
+  JsonJavaFactory factory = JsonJavaFactory.instanceEx;
+  JsonJavaObject json = (JsonJavaObject) JsonParser.fromJson(factory, responseBody);
+
+  return json.getArray("docs");
+}
+
+/**
+ * Helper method to post data to a URL from the LDC Via service
+ * @param url
+ * @param data
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String postURL(String url, String data) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpPut httppost = new HttpPost(this.baseurl + url);
+  StringEntity input = new StringEntity(data);
+	input.setContentType("application/json");
+	httppost.setEntity(input);
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+  httppost.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httppost, responseHandler);
+}
 ```
 
 ```javascript
