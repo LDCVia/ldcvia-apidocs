@@ -231,7 +231,7 @@ This endpoint retrieves all databases that you have access to.
 
 ### HTTP Request
 
-`POST http://ldcvia.com/api/1.0/login`
+`POST http://ldcvia.com/1.0/login`
 
 # Databases
 
@@ -317,7 +317,7 @@ This endpoint retrieves all databases that you have access to.
 
 ### HTTP Request
 
-`GET http://ldcvia.com/api/1.0/databases`
+`GET http://ldcvia.com/1.0/databases`
 
 ## Get Database Details
 
