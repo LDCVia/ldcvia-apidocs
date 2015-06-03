@@ -1177,6 +1177,440 @@ _id | internal unique reference id
 rich text fields | when accessed via a collection all formatting is removed and a plain text representation of the content is returned. For full access to the rich text load the relevant document. Rich Text fields always have a second "__parsed" version of the field that can be used for searching purposes, this allows binary data to be stored in the primary rich text field
 system fields | fields prefixed with __ are system fields that relate to your original Domino data. If the document has file attachments associated with it, the names of the files can be found in the field _files
 
+
+
+
+# Views
+
+A view is a saved filter that can be used to provide a quick way of accessing a subset of data. Think of it as a saved search. The query property of a view can be used to search in a collection
+
+## Get all views in a database
+Given a database name, this method will return a list of all views in the database.
+
+```java
+/**
+ * Gets a list of views for the given database
+ *
+ * @param dbname
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+@SuppressWarnings("unchecked")
+public ArrayList getViews(String dbname) throws ClientProtocolException, IOException, JsonException{
+	String responseBody = loadURL("/1.0/views/" + dbname);
+
+	JsonJavaFactory factory = JsonJavaFactory.instanceEx;
+	ArrayList list = (ArrayList) JsonParser.fromJson(factory, responseBody);
+	Collections.sort(list, new CollectionComparator());
+	return list;
+}
+
+/**
+ * Helper method to request a URL from the LDC Via service
+ * @param url
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String loadURL(String url) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpGet httpget = new HttpGet(this.baseurl + url);
+
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	httpget.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httpget, responseHandler);
+}
+```
+
+```javascript
+var root = 'https://ldcvia.com';
+var apikey = 'MYSECRETAPIKEY';
+$.ajax({
+  dataType: 'json',
+  type: 'GET',
+  url: root + '/1.0/views/' + dbname,
+  headers: {
+    'apikey': apikey
+  },
+  success: function(res) {
+    console.log(res);
+  }
+})
+```
+> The above command returns JSON structured like this:
+
+```json
+[
+  {
+    "query" : "{\"filters\":[{\"operator\":\"contains\",\"field\":\"Categories\",\"value\":\"API\"}]}",
+    "title" : "API Documents",
+    "collname" : "MainTopic",
+    "name" : "API-Documents",
+    "dbname" : "dev-londc-com-demos-discussion-nsf",
+    "createdAt" : "2015-06-03T10:34:46.037Z",
+    "style" : "or",
+    "__v" : 0
+  }
+]
+```
+
+### HTTP Request
+
+`GET http://ldcvia.com/1.0/views/:database`
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+:database | This is the unique name of the database which can be accessed using the databases service
+
+## Get a view in a database
+Given a database name and a view, this method will return the details of the view.
+
+```java
+/**
+ * Gets a view for the given database
+ *
+ * @param dbname
+ * @param viewname
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+@SuppressWarnings("unchecked")
+public ArrayList getViews(String dbname, String viewname) throws ClientProtocolException, IOException, JsonException{
+	String responseBody = loadURL("/1.0/views/" + dbname + "/" + viewname);
+
+	JsonJavaFactory factory = JsonJavaFactory.instanceEx;
+	ArrayList list = (ArrayList) JsonParser.fromJson(factory, responseBody);
+	Collections.sort(list, new CollectionComparator());
+	return list;
+}
+
+/**
+ * Helper method to request a URL from the LDC Via service
+ * @param url
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String loadURL(String url) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpGet httpget = new HttpGet(this.baseurl + url);
+
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	httpget.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httpget, responseHandler);
+}
+```
+
+```javascript
+var root = 'https://ldcvia.com';
+var apikey = 'MYSECRETAPIKEY';
+$.ajax({
+  dataType: 'json',
+  type: 'GET',
+  url: root + '/1.0/views/' + dbname + '/' + viewname,
+  headers: {
+    'apikey': apikey
+  },
+  success: function(res) {
+    console.log(res);
+  }
+})
+```
+> The above command returns JSON structured like this:
+
+```json
+{
+  "query" : "{\"filters\":[{\"operator\":\"contains\",\"field\":\"Categories\",\"value\":\"API\"}]}",
+  "title" : "API Documents",
+  "collname" : "MainTopic",
+  "name" : "API-Documents",
+  "dbname" : "dev-londc-com-demos-discussion-nsf",
+  "createdAt" : "2015-06-03T10:34:46.037Z",
+  "style" : "or",
+  "__v" : 0
+}
+```
+
+### HTTP Request
+
+`GET http://ldcvia.com/1.0/views/:database/:view`
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+:database | This is the unique name of the database which can be accessed using the databases service
+:view | This is the unique name of the view to read configuration from
+
+
+## Add or update a view
+Store the configuration of a view
+
+```java
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.apache.http.entity.StringEntity;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+import java.util.Date;
+
+/**
+ * Create a new view
+ *  
+ * @param dbname
+ * @param collection
+ * @param viewname
+ * @param title
+ * @param style
+ * @param query
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public void createNewDocument(String dbname, String collection, String viewname, String title, String style, String query) throws ClientProtocolException, IOException, JsonException{
+  Date date = new Date();
+	putURL("/1.0/views/" + dbname + "/" + viewname "{\"title\": \"" + title + "\", \"style\": \"" + style + "\", \"query\": \"" + query + "\"}");
+}
+
+/**
+ * Helper method to post data to a URL from the LDC Via service
+ * @param url
+ * @param data
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String putURL(String url, String data) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpPut httpput = new HttpPust(this.baseurl + url);
+  StringEntity input = new StringEntity(data);
+	input.setContentType("application/json");
+	httppost.setEntity(input);
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+  httppost.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httppost, responseHandler);
+}
+```
+
+```javascript
+var saveNewView = function() {
+  //Start building the document data
+  var data = {};
+  data.collname = $("#collname").val();
+  data.title = viewtitle;
+  data.style = $("#querystyle").val();
+  var query = {"filters": []};
+
+  var rows = $("#viewtable tbody tr");
+  for (var i=0; i<rows.length; i++){
+    var fieldname = $("#viewtable_fieldname_" + (i + 1)).val();
+    var comparetype = $("#viewtable_comparetype_" + (i + 1)).val();
+    var comparevalue = $("#viewtable_comparevalue_" + (i + 1)).val();
+    query.filters.push({'operator': comparetype, 'field': fieldname, 'value': comparevalue});
+  }
+  data.query = JSON.stringify(query);
+
+  $.ajax({
+    dataType: 'json',
+    type: 'POST',
+    headers: {
+      'apikey': apikey
+    },
+    data: data,
+    url: '/1.0/views/' + dbname + "/" + viewname,
+    complete: function(res) {
+      //Do something
+    }
+  });
+
+}
+```
+
+> If the view is inserted correctly, the above returns a 200 success code, otherwise you will receive an error
+
+### HTTP Request
+`POST https://ldcvia.com/1.0/views/:database/:viewname`
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+:database | This is the unique name of the database which can be accessed using the databases service
+:viewname | The name of the view to store
+
+## Delete a view
+
+To delete a view, use this method.
+
+```java
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Delete a view from a database
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public void deleteDocument(String dbname, String viewname) throws ClientProtocolException, IOException, JsonException{
+	deleteURL("/1.0/document/" + dbname + "/" + viewname);
+}
+
+/**
+ * Helper method to delete a URL from the LDC Via service
+ * @param url
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String deleteURL(String url) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpDelete httpdelete = new HttpDelete(this.baseurl + url);
+
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	httpget.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httpget, responseHandler);
+}
+```
+
+```javascript
+$.ajax({
+  dataType: 'json',
+  type: 'DELETE',
+  headers: { 'apikey': apikey },
+  url: '/1.0/document/' + database + '/' + viewname,
+  success: function(res){
+    //Do something
+  },
+  error: function(xhr, status, error){
+    if (xhr.status == 401){
+      alert("You do not have the rights to delete the view");
+    }else{
+      alert(status + '\n' + error);
+    }
+  }
+})
+
+```
+
+> The above returns JSON structured like this:
+
+```json
+'ok'
+```
+
+### HTTP Request
+`DELETE https://ldcvia.com/1.0/views/:database/:viewname`
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+:database | This is the unique name of the database which can be accessed using the databases service
+:viewname | The name of the view to delete
+
+
+
+
 # Documents
 
 A document is a group of fields that are related to each other. Not all documents the same, but it is a fair assumption that all documents in the same collection will have the same group of fields on them.
