@@ -999,10 +999,24 @@ Search for documents created on or after 1st Jan 2015 and on or before 31st Jan 
   ]
 }
 ```
+```
+/*
+Perform a full text search for the words "some text"
+*/
+```
+```
+{
+  "fulltext": "some text"
+}
+```
 
-To perform a search against a collection, you can submit queries to be run against one or more fields.
+To perform a search against a collection, you can submit queries to be run against one or more fields or against the entire collection using full text.
+
+To use a full text query, the database must be indexed which can be enabled in DB Viewer - Database Settings. Full Text Indexes can only be enabled for paid accounts.
 
 Search queries are built up using an array of JSON objects. You can search for exact matches in a field, fields that contain text, or date and number ranges. You can add as many parameters to a search as are required to get the set of documents that you need, and then use the URL parameters count and start to page through the results. In this way you can effectively create the equivalent of Notes views of data.
+
+Full Text and field based queries can be mixed together in the same request if required.
 
 Keywords that you can use to search for data include:
 
