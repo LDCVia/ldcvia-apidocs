@@ -412,12 +412,15 @@ $.ajax({
 });
 ```
 
-> If you can delete the database you will see:
+> If you have access to the database you will see:
 
 ```json
 {
   "db": "dev-londc-com-demos-fakenames-nsf",
   "readonly": false,
+  "indexed": false,
+  "publicaccess": 0,
+  "created": "2015-07-01T00:00:00.000Z",
   "title": "NAB"
 }
 ```
@@ -757,7 +760,9 @@ Parameter | Description
 
 ## Get All Documents In a Collection
 
-Description
+To get all documents in a collection, use this method. You can page through results using the start and count URL parameters.
+
+
 
 ```java
 /**
@@ -836,6 +841,8 @@ Parameter | Default | Description
 --------- | ------- | -----------
 count | 30 | The number of documents to get data for.
 start | 0 | The starting position in the view, use this to page through documents
+sortasc | null | The name of the field to sort results in ascending order
+sortdesc | __created | The name of the field to sort results in descending order
 
 ### Response JSON
 
@@ -1180,6 +1187,8 @@ Parameter | Default | Description
 count | 30 | The number of documents to get data for.
 start | 0 | The starting position in the view, use this to page through documents
 join | or | If you are applying multiple queries in a single search, the default will be to join them with an OR operator. Use this parameter to change the join to AND by setting &join=and in the URL
+sortasc | null | The name of the field to sort results in ascending order
+sortdesc | __created | The name of the field to sort results in descending order
 
 ### Response JSON
 
@@ -4441,6 +4450,40 @@ Parameter | Description
 :database | This is the unique name of the database which can be accessed using the databases service.
 :collectionname | the name of the collection to get the document from
 :unid | the unid of the document to export to PDF
+
+## Export to EML
+Given a database, collection name and document id, this method will return an EML format file with all fields on the document. This is designed to be used with migrated Domino mail files. It will attempt to run with other files but may not return content.
+
+```java
+//TODO: Add Sample
+```
+
+```javascript
+$.ajax({
+  dataType: 'json',
+  type: 'GET',
+  headers: {
+    'apikey': apikey
+  },
+  url: '/1.0/pdf/dev-londc-com-demos-discussion-nsf/MainTopic/12345678',
+  success: function(res) {
+    //Do Something
+  }
+})
+```
+
+> The above returns a binary stream of the EML document
+
+### HTTP Request
+`GET https://ldcvia.com/1.0/eml/:database/:collectionname/:unid`
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+:database | This is the unique name of the database which can be accessed using the databases service.
+:collectionname | the name of the collection to get the document from
+:unid | the unid of the document to export to EML
 
 ## Export to Excel
 Given a database and collection name, this method will return an Excel spreadsheet list of documents in the collection. The response will contain a list of documents from the collection, you can control how many documents and where in the collection to get them from using URL parameters.
