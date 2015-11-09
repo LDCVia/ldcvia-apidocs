@@ -433,11 +433,14 @@ You must replace `INSERTYOURAPIKEYHERE` with your personal API key.
 </code></pre>
 
 <blockquote>
-<p>If you can delete the database you will see:</p>
+<p>If you have access to the database you will see:</p>
 </blockquote>
 <pre><code class="highlight json"><span class="p">{</span><span class="w">
   </span><span class="s2">"db"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dev-londc-com-demos-fakenames-nsf"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"readonly"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"indexed"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"publicaccess"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"created"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-07-01T00:00:00.000Z"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NAB"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
@@ -801,7 +804,7 @@ You must replace `INSERTYOURAPIKEYHERE` with your personal API key.
 
 <h2 id="get-all-documents-in-a-collection">Get All Documents In a Collection</h2>
 
-<p>Description</p>
+<p>To get all documents in a collection, use this method. You can page through results using the start and count URL parameters.</p>
 <pre><code class="highlight java"><span class="cm">/**
  * Get a list of documents from a collection
  * Document level security applies
@@ -900,6 +903,16 @@ You must replace `INSERTYOURAPIKEYHERE` with your personal API key.
 <td>start</td>
 <td>0</td>
 <td>The starting position in the view, use this to page through documents</td>
+</tr>
+<tr>
+<td>sortasc</td>
+<td>null</td>
+<td>The name of the field to sort results in ascending order</td>
+</tr>
+<tr>
+<td>sortdesc</td>
+<td>__created</td>
+<td>The name of the field to sort results in descending order</td>
 </tr>
 </tbody></table>
 
@@ -1307,6 +1320,16 @@ Perform a full text search for the words "some text"
 <td>join</td>
 <td>or</td>
 <td>If you are applying multiple queries in a single search, the default will be to join them with an OR operator. Use this parameter to change the join to AND by setting &amp;join=and in the URL</td>
+</tr>
+<tr>
+<td>sortasc</td>
+<td>null</td>
+<td>The name of the field to sort results in ascending order</td>
+</tr>
+<tr>
+<td>sortdesc</td>
+<td>__created</td>
+<td>The name of the field to sort results in descending order</td>
 </tr>
 </tbody></table>
 
@@ -4851,6 +4874,54 @@ Perform a full text search for the words "some text"
 <tr>
 <td>:unid</td>
 <td>the unid of the document to export to PDF</td>
+</tr>
+</tbody></table>
+
+<h2 id="export-to-eml">Export to EML</h2>
+
+<p>Given a database, collection name and document id, this method will return an EML format file with all fields on the document. This is designed to be used with migrated Domino mail files. It will attempt to run with other files but may not return content.</p>
+<pre><code class="highlight java"><span class="c1">//TODO: Add Sample</span>
+</code></pre>
+<pre><code class="highlight javascript"><span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+  <span class="na">dataType</span><span class="p">:</span> <span class="s1">'json'</span><span class="p">,</span>
+  <span class="na">type</span><span class="p">:</span> <span class="s1">'GET'</span><span class="p">,</span>
+  <span class="na">headers</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s1">'apikey'</span><span class="p">:</span> <span class="nx">apikey</span>
+  <span class="p">},</span>
+  <span class="na">url</span><span class="p">:</span> <span class="s1">'/1.0/pdf/dev-londc-com-demos-discussion-nsf/MainTopic/12345678'</span><span class="p">,</span>
+  <span class="na">success</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">//Do Something</span>
+  <span class="p">}</span>
+<span class="p">})</span>
+</code></pre>
+
+<blockquote>
+<p>The above returns a binary stream of the EML document</p>
+</blockquote>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://ldcvia.com/1.0/eml/:database/:collectionname/:unid</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>:database</td>
+<td>This is the unique name of the database which can be accessed using the databases service.</td>
+</tr>
+<tr>
+<td>:collectionname</td>
+<td>the name of the collection to get the document from</td>
+</tr>
+<tr>
+<td>:unid</td>
+<td>the unid of the document to export to EML</td>
 </tr>
 </tbody></table>
 
