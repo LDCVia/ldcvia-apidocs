@@ -4669,7 +4669,7 @@ $.ajax({
 })
 ```
 
-> The above returns a JSON object which indicates whether the operation was successful.
+> The above moves all documents in the ResponseToResponse collection into the Response To Response collection and then returns a JSON object which indicates whether the operation was successful.
 
 ```json
 {
