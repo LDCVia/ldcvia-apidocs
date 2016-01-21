@@ -4649,6 +4649,45 @@ Parameter | Description
 :fieldname | The fieldname to parse for doclinks
 
 
+
+
+## Merge Collections
+Given a database, you have the ability to merge the contents of one collection into another. It can also be used to rename a collection.
+
+```javascript
+$.ajax({
+  dataType: 'json',
+  type: 'POST',
+  data: {"sourcecollection": "ResponseToResponse", "targetcollection": "Response To Response"}
+  headers: {
+    'apikey': apikey
+  },
+  url: '/1.0/mergecollections/dev-londc-com-demos-discussion-nsf',
+  success: function(res) {
+    //Do Something
+  }
+})
+```
+
+> The above returns a JSON object which indicates whether the operation was successful.
+
+```json
+{
+  "result": "ok"
+}
+```
+
+### HTTP Request
+`GET https://ldcvia.com/1.0/mergecollections/:database`
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+:database | This is the unique name of the database which can be accessed using the databases service.
+
+
+
 # Audit Trail
 Every single operation against our API is recorded in our logs. We provide a set of APIs to access those logs for further analysis.
 
