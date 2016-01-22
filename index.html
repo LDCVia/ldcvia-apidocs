@@ -5127,6 +5127,49 @@ Perform a full text search for the words "some text"
 </tr>
 </tbody></table>
 
+<h2 id="merge-collections">Merge Collections</h2>
+
+<p>Given a database, you have the ability to merge the contents of one collection into another. It can also be used to rename a collection.</p>
+<pre><code class="highlight javascript"><span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+  <span class="na">dataType</span><span class="p">:</span> <span class="s1">'json'</span><span class="p">,</span>
+  <span class="na">type</span><span class="p">:</span> <span class="s1">'POST'</span><span class="p">,</span>
+  <span class="na">data</span><span class="p">:</span> <span class="p">{</span><span class="s2">"sourcecollection"</span><span class="p">:</span> <span class="s2">"ResponseToResponse"</span><span class="p">,</span> <span class="s2">"targetcollection"</span><span class="p">:</span> <span class="s2">"Response To Response"</span><span class="p">}</span>
+  <span class="nl">headers</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s1">'apikey'</span><span class="p">:</span> <span class="nx">apikey</span>
+  <span class="p">},</span>
+  <span class="na">url</span><span class="p">:</span> <span class="s1">'/1.0/mergecollections/dev-londc-com-demos-discussion-nsf'</span><span class="p">,</span>
+  <span class="na">success</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">//Do Something</span>
+  <span class="p">}</span>
+<span class="p">})</span>
+</code></pre>
+
+<blockquote>
+<p>The above moves all documents in the ResponseToResponse collection into the Response To Response collection and then returns a JSON object which indicates whether the operation was successful.</p>
+</blockquote>
+<pre><code class="highlight json"><span class="p">{</span><span class="w">
+  </span><span class="s2">"result"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ok"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://ldcvia.com/1.0/mergecollections/:database</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>:database</td>
+<td>This is the unique name of the database which can be accessed using the databases service.</td>
+</tr>
+</tbody></table>
+
 <h1 id="audit-trail">Audit Trail</h1>
 
 <p>Every single operation against our API is recorded in our logs. We provide a set of APIs to access those logs for further analysis.</p>
@@ -6361,7 +6404,7 @@ Perform a full text search for the words "some text"
 </tr>
 <tr>
 <td>403</td>
-<td>Forbidden &ndash; The page requested is hidden for administrators only</td>
+<td>Forbidden &ndash; The page requested is not available to you</td>
 </tr>
 <tr>
 <td>404</td>
@@ -6385,7 +6428,7 @@ Perform a full text search for the words "some text"
 </tr>
 <tr>
 <td>429</td>
-<td>Too Many Requests &ndash; You&rsquo;re requesting too many page! Slown down!</td>
+<td>Too Many Requests &ndash; You&rsquo;re requesting too many pages! Slown down!</td>
 </tr>
 <tr>
 <td>500</td>
