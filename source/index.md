@@ -198,7 +198,7 @@ private String postURL(String url, String data) throws ClientProtocolException, 
 
 ```javascript
 var data = {'username': "fred@bloggs.com", 'password': 'SuperSecretPassword'};
-var root = 'https://ldcvia.com';
+var root = 'https://eu.ldcvia.com';
   $.ajax({
     dataType: 'json',
     type: 'POST',
@@ -231,7 +231,7 @@ This endpoint retrieves all databases that you have access to.
 
 ### HTTP Request
 
-`POST http://ldcvia.com/1.0/login`
+`POST http://eu.ldcvia.com/1.0/login`
 
 # Databases
 
@@ -287,7 +287,7 @@ private String loadURL(String url) throws ClientProtocolException, IOException {
 ```
 
 ```javascript
-var root = 'https://ldcvia.com';
+var root = 'https://eu.ldcvia.com';
   var apikey = 'MYSECRETAPIKEY';
   $.ajax({
     dataType: 'json',
@@ -317,7 +317,7 @@ This endpoint retrieves all databases that you have access to.
 
 ### HTTP Request
 
-`GET http://ldcvia.com/1.0/databases`
+`GET http://eu.ldcvia.com/1.0/databases`
 
 ## Get Database Details
 
@@ -426,7 +426,7 @@ $.ajax({
 ```
 
 ### HTTP Request
-`GET https://ldcvia.com/1.0/database/:database`
+`GET https://eu.ldcvia.com/1.0/database/:database`
 
 ### URL Parameters
 
@@ -540,7 +540,7 @@ $.ajax({
 ```
 
 ### HTTP Request
-`GET https://ldcvia.com/1.0/database/:database`
+`GET https://eu.ldcvia.com/1.0/database/:database`
 
 ### URL Parameters
 
@@ -646,7 +646,7 @@ $.ajax({
 ```
 
 ### HTTP Request
-`DELETE https://ldcvia.com/1.0/database/:database`
+`DELETE https://eu.ldcvia.com/1.0/database/:database`
 
 ### URL Parameters
 
@@ -715,7 +715,7 @@ private String loadURL(String url) throws ClientProtocolException, IOException {
 ```
 
 ```javascript
-var root = 'https://ldcvia.com';
+var root = 'https://eu.ldcvia.com';
 var apikey = 'MYSECRETAPIKEY';
 $.ajax({
   dataType: 'json',
@@ -750,7 +750,7 @@ $.ajax({
 
 ### HTTP Request
 
-`GET http://ldcvia.com/1.0/collections/:database`
+`GET https://eu.ldcvia.com/1.0/collections/:database`
 
 ### URL Parameters
 
@@ -786,7 +786,7 @@ public JsonJavaArray getDocuments(String dbname, String collection, int position
 ```
 
 ```javascript
-var root = 'https://ldcvia.com';
+var root = 'https://eu.ldcvia.com';
 var apikey = 'MYSECRETAPIKEY';
 $.ajax({
   dataType: 'json',
@@ -826,7 +826,7 @@ $.ajax({
 ```
 
 ### HTTP Request
-`GET https://ldcvia.com/1.0/collections/:database/:collectionname`
+`GET https://eu.ldcvia.com/1.0/collections/:database/:collectionname`
 
 ### URL Parameters
 
@@ -954,7 +954,7 @@ $.ajax({
 ```
 
 ### HTTP Request
-`DELETE https://ldcvia.com/1.0/collections/:database/:collectionname`
+`DELETE https://eu.ldcvia.com/1.0/collections/:database/:collectionname`
 
 ### URL Parameters
 
@@ -1171,7 +1171,7 @@ $.ajax({
 ```
 
 ### HTTP Request
-`POST https://ldcvia.com/1.0/search/:database/:collectionname`
+`POST https://eu.ldcvia.com/1.0/search/:database/:collectionname`
 
 ### URL Parameters
 
@@ -1261,7 +1261,7 @@ private String loadURL(String url) throws ClientProtocolException, IOException {
 ```
 
 ```javascript
-var root = 'https://ldcvia.com';
+var root = 'https://eu.ldcvia.com';
 var apikey = 'MYSECRETAPIKEY';
 $.ajax({
   dataType: 'json',
@@ -1294,7 +1294,7 @@ $.ajax({
 
 ### HTTP Request
 
-`GET http://ldcvia.com/1.0/views/:database`
+`GET https://eu.ldcvia.com/1.0/views/:database`
 
 ### URL Parameters
 
@@ -1357,7 +1357,7 @@ private String loadURL(String url) throws ClientProtocolException, IOException {
 ```
 
 ```javascript
-var root = 'https://ldcvia.com';
+var root = 'https://eu.ldcvia.com';
 var apikey = 'MYSECRETAPIKEY';
 $.ajax({
   dataType: 'json',
@@ -1388,7 +1388,7 @@ $.ajax({
 
 ### HTTP Request
 
-`GET http://ldcvia.com/1.0/views/:database/:view`
+`GET https://eu.ldcvia.com/1.0/views/:database/:view`
 
 ### URL Parameters
 
@@ -1516,7 +1516,7 @@ var saveNewView = function() {
 > If the view is inserted correctly, the above returns a 200 success code, otherwise you will receive an error
 
 ### HTTP Request
-`POST https://ldcvia.com/1.0/views/:database/:viewname`
+`POST https://eu.ldcvia.com/1.0/views/:database/:viewname`
 
 ### URL Parameters
 
@@ -1622,7 +1622,7 @@ $.ajax({
 ```
 
 ### HTTP Request
-`DELETE https://ldcvia.com/1.0/views/:database/:viewname`
+`DELETE https://eu.ldcvia.com/1.0/views/:database/:viewname`
 
 ### URL Parameters
 
@@ -1723,7 +1723,7 @@ $.ajax({
 ```
 
 ### HTTP Request
-`GET https://ldcvia.com/1.0/document/:database/:collectionname/:unid`
+`GET https://eu.ldcvia.com/1.0/document/:database/:collectionname/:unid`
 
 ### URL Parameters
 
@@ -1877,7 +1877,7 @@ disc.sendNewMainTopic = function(data) {
 > If the document is inserted correctly, the above returns a 200 success code, otherwise you will receive an error
 
 ### HTTP Request
-`PUT https://ldcvia.com/1.0/document/:database/:collectionname/:unid`
+`PUT https://eu.ldcvia.com/1.0/document/:database/:collectionname/:unid`
 
 ### URL Parameters
 
@@ -2028,7 +2028,7 @@ disc.sendMainTopic = function(unid, data) {
 > If the document is updated correctly, the above returns a 200 success code, otherwise you will receive an error
 
 ### HTTP Request
-`POST https://ldcvia.com/1.0/document/:database/:collectionname/:unid`
+`POST https://eu.ldcvia.com/1.0/document/:database/:collectionname/:unid`
 
 ### URL Parameters
 
@@ -2137,7 +2137,7 @@ $.ajax({
 ```
 
 ### HTTP Request
-`DELETE https://ldcvia.com/1.0/document/:database/:collectionname/:unid`
+`DELETE https://eu.ldcvia.com/1.0/document/:database/:collectionname/:unid`
 
 ### URL Parameters
 
@@ -2177,13 +2177,13 @@ Given a database name, collection name, document id and attachment name, you can
 ```
 
 ```javascript
-window.open("https://ldcvia.com/1.0/attachment/:database/:collectionname/:unid/:filename");
+window.open("https://eu.ldcvia.com/1.0/attachment/:database/:collectionname/:unid/:filename");
 ```
 
 > If the file exists (and you are allowed to access it), then the file will be sent as a binary stream to the requestor. If the file does not exists (or you are not allowed to access it) then an error will be returned.
 
 ### HTTP Request
-`GET https://ldcvia.com/1.0/attachment/:database/:collectionname/:unid/:filename`
+`GET https://eu.ldcvia.com/1.0/attachment/:database/:collectionname/:unid/:filename`
 
 ### URL Parameters
 
@@ -2293,7 +2293,7 @@ $.ajax({
 ```
 
 ### HTTP Request
-`DELETE https://ldcvia.com/1.0/attachment/:database/:collectionname/:unid/:filename`
+`DELETE https://eu.ldcvia.com/1.0/attachment/:database/:collectionname/:unid/:filename`
 
 ### URL Parameters
 
@@ -2443,7 +2443,7 @@ $.ajax({
 ```
 
 ### HTTP Request
-`GET https://ldcvia.com/1.0/metadata/:database/:collectionname`
+`GET https://eu.ldcvia.com/1.0/metadata/:database/:collectionname`
 
 ### URL Parameters
 
@@ -2560,7 +2560,7 @@ $.ajax({
 ```
 
 ### HTTP Request
-`POST https://ldcvia.com/1.0/metadata/:database/:collectionname`
+`POST https://eu.ldcvia.com/1.0/metadata/:database/:collectionname`
 
 ### URL Parameters
 
@@ -2666,7 +2666,7 @@ $.ajax({
 ```
 
 ### HTTP Request
-`GET https://ldcvia.com/1.0/resetmetadata/:database/:collectionname`
+`GET https://eu.ldcvia.com/1.0/resetmetadata/:database/:collectionname`
 
 ### URL Parameters
 
@@ -2806,7 +2806,7 @@ $.ajax({
 ```
 
 ### HTTP Request
-`GET https://ldcvia.com/1.0/userdetails`
+`GET https://eu.ldcvia.com/1.0/userdetails`
 
 ## Get other user's details
 
@@ -2932,7 +2932,7 @@ $.ajax({
 ```
 
 ### HTTP Request
-`GET https://ldcvia.com/1.0/userdetails/:email`
+`GET https://eu.ldcvia.com/1.0/userdetails/:email`
 
 ### URL Parameters
 
@@ -3086,7 +3086,7 @@ $.ajax({
 ```
 
 ### HTTP Request
-`POST https://ldcvia.com/1.0/users`
+`POST https://eu.ldcvia.com/1.0/users`
 
 
 ## Update Users details
@@ -3197,7 +3197,7 @@ $.ajax({
 ```
 
 ### HTTP Request
-`POST https://ldcvia.com/1.0/userdetails/:email`
+`POST https://eu.ldcvia.com/1.0/userdetails/:email`
 
 ### URL Parameters
 
@@ -3296,7 +3296,7 @@ $.ajax({
 ```
 
 ### HTTP Request
-`DELETE https://ldcvia.com/1.0/userdetails/:email`
+`DELETE https://eu.ldcvia.com/1.0/userdetails/:email`
 
 ### URL Parameters
 
@@ -3398,7 +3398,7 @@ $.ajax({
 ```
 
 ### HTTP Request
-`GET https://ldcvia.com/1.0/groups`
+`GET https://eu.ldcvia.com/1.0/groups`
 
 
 ## Add multiple users to group
@@ -3506,7 +3506,7 @@ $.ajax({
 ```
 
 ### HTTP Request
-`POST https://ldcvia.com/1.0/groups`
+`POST https://eu.ldcvia.com/1.0/groups`
 
 ## Add single user to group
 ```java
@@ -3592,7 +3592,7 @@ $.ajax({
 > The above returns 200 Success if the action worked
 
 ### HTTP Request
-`GET https://ldcvia.com/1.0/groups/:email/:groupname`
+`GET https://eu.ldcvia.com/1.0/groups/:email/:groupname`
 
 ### URL Parameters
 
@@ -3685,7 +3685,7 @@ $.ajax({
 > The above returns 200 Success if the action worked
 
 ### HTTP Request
-`DELETE https://ldcvia.com/1.0/groups/:email/:groupname`
+`DELETE https://eu.ldcvia.com/1.0/groups/:email/:groupname`
 
 ### URL Parameters
 
@@ -3786,7 +3786,7 @@ $.ajax({
 ```
 
 ### HTTP Request
-`GET https://ldcvia.com/1.0/groups/:groupname`
+`GET https://eu.ldcvia.com/1.0/groups/:groupname`
 
 ### URL Parameters
 
@@ -3878,7 +3878,7 @@ $.ajax({
 > The above returns 200 Success if the action worked
 
 ### HTTP Request
-`DELETE https://ldcvia.com/1.0/groups/:groupname`
+`DELETE https://eu.ldcvia.com/1.0/groups/:groupname`
 
 ### URL Parameters
 
@@ -3978,7 +3978,7 @@ $.ajax({
 ```
 
 ### HTTP Request
-`GET https://ldcvia.com/1.0/users`
+`GET https://eu.ldcvia.com/1.0/users`
 
 ## Add user to database
 ```java
@@ -4068,7 +4068,7 @@ $.ajax({
 > The above returns 200 Success if the operation completed successfully
 
 ### HTTP Request
-`GET https://ldcvia.com/1.0/userdetails/:email/:database`
+`GET https://eu.ldcvia.com/1.0/userdetails/:email/:database`
 
 ### URL Parameters
 
@@ -4161,7 +4161,7 @@ $.ajax({
 > The above returns 200 Success if the operation completed successfully
 
 ### HTTP Request
-`DELETE https://ldcvia.com/1.0/userdetails/:email/:database`
+`DELETE https://eu.ldcvia.com/1.0/userdetails/:email/:database`
 
 ### URL Parameters
 
@@ -4269,7 +4269,7 @@ $.ajax({
 ```
 
 ### HTTP Request
-`GET https://ldcvia.com/1.0/list/:database/:collectionname/:fieldname`
+`GET https://eu.ldcvia.com/1.0/list/:database/:collectionname/:fieldname`
 
 ### URL Parameters
 
@@ -4393,7 +4393,7 @@ $.ajax({
 ```
 
 ### HTTP Request
-`GET https://ldcvia.com/1.0/responses/:database/:collectionname/:unid`
+`GET https://eu.ldcvia.com/1.0/responses/:database/:collectionname/:unid`
 
 ### URL Parameters
 
@@ -4441,7 +4441,7 @@ $.ajax({
 > The above returns a binary stream of the PDF document
 
 ### HTTP Request
-`GET https://ldcvia.com/1.0/pdf/:database/:collectionname/:unid`
+`GET https://eu.ldcvia.com/1.0/pdf/:database/:collectionname/:unid`
 
 ### URL Parameters
 
@@ -4475,7 +4475,7 @@ $.ajax({
 > The above returns a binary stream of the EML document
 
 ### HTTP Request
-`GET https://ldcvia.com/1.0/eml/:database/:collectionname/:unid`
+`GET https://eu.ldcvia.com/1.0/eml/:database/:collectionname/:unid`
 
 ### URL Parameters
 
@@ -4511,7 +4511,7 @@ $.ajax({
 > The above returns a binary stream of the PDF document
 
 ### HTTP Request
-`GET https://ldcvia.com/1.0/excel/:database/:collectionname`
+`GET https://eu.ldcvia.com/1.0/excel/:database/:collectionname`
 
 ### URL Parameters
 
@@ -4637,7 +4637,7 @@ $.ajax({
 ```
 
 ### HTTP Request
-`GET https://ldcvia.com/1.0/doclink/:database/:collectionname/:unid/:fieldname`
+`GET https://eu.ldcvia.com/1.0/doclink/:database/:collectionname/:unid/:fieldname`
 
 ### URL Parameters
 
@@ -4678,7 +4678,7 @@ $.ajax({
 ```
 
 ### HTTP Request
-`GET https://ldcvia.com/1.0/mergecollections/:database`
+`GET https://eu.ldcvia.com/1.0/mergecollections/:database`
 
 ### URL Parameters
 
@@ -4789,7 +4789,7 @@ $.ajax({
 ```
 
 ### HTTP Request
-`GET https://ldcvia.com/1.0/activity`
+`GET https://eu.ldcvia.com/1.0/activity`
 
 ## Search Logs
 If you want to further filter the logs to a specific date range or only contain certain messages, for example, then all of the above methods can also be used with POST requests. The responses will be the same format as above. To restrict the logs you can add all of some of the following criteria in a JSON post.
@@ -4910,7 +4910,7 @@ $.ajax({
 ```
 
 ### HTTP Request
-`POST https://ldcvia.com/1.0/activity`
+`POST https://eu.ldcvia.com/1.0/activity`
 
 ## Get Single Database Logs
 
@@ -5030,7 +5030,7 @@ $.ajax({
 ```
 
 ### HTTP Request
-`GET https://ldcvia.com/1.0/activity/:database`
+`GET https://eu.ldcvia.com/1.0/activity/:database`
 
 ### URL Parameters
 
@@ -5183,7 +5183,7 @@ $.ajax({
 ```
 
 ### HTTP Request
-`GET https://ldcvia.com/1.0/activity/:database`
+`GET https://eu.ldcvia.com/1.0/activity/:database`
 
 ### URL Parameters
 
@@ -5316,7 +5316,7 @@ $.ajax({
 ```
 
 ### HTTP Request
-`GET https://ldcvia.com/1.0/activity/:database/:collectionname`
+`GET https://eu.ldcvia.com/1.0/activity/:database/:collectionname`
 
 ### URL Parameters
 
@@ -5469,7 +5469,7 @@ $.ajax({
 ```
 
 ### HTTP Request
-`GET https://ldcvia.com/1.0/activity/:database/:collectionname`
+`GET https://eu.ldcvia.com/1.0/activity/:database/:collectionname`
 
 ### URL Parameters
 
@@ -5601,7 +5601,7 @@ $.ajax({
 ```
 
 ### HTTP Request
-`GET https://ldcvia.com/1.0/activity/:database/:collectionname/:unid`
+`GET https://eu.ldcvia.com/1.0/activity/:database/:collectionname/:unid`
 
 ### URL Parameters
 
@@ -5754,7 +5754,7 @@ $.ajax({
 ```
 
 ### HTTP Request
-`GET https://ldcvia.com/1.0/activity/:database/:collectionname/:unid`
+`GET https://eu.ldcvia.com/1.0/activity/:database/:collectionname/:unid`
 
 ### URL Parameters
 
