@@ -224,7 +224,7 @@ You must replace `INSERTYOURAPIKEYHERE` with your personal API key.
 <span class="o">}</span>
 </code></pre>
 <pre><code class="highlight javascript"><span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'username'</span><span class="p">:</span> <span class="s2">"fred@bloggs.com"</span><span class="p">,</span> <span class="s1">'password'</span><span class="p">:</span> <span class="s1">'SuperSecretPassword'</span><span class="p">};</span>
-<span class="kd">var</span> <span class="nx">root</span> <span class="o">=</span> <span class="s1">'https://ldcvia.com'</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">root</span> <span class="o">=</span> <span class="s1">'https://eu.ldcvia.com'</span><span class="p">;</span>
   <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
     <span class="na">dataType</span><span class="p">:</span> <span class="s1">'json'</span><span class="p">,</span>
     <span class="na">type</span><span class="p">:</span> <span class="s1">'POST'</span><span class="p">,</span>
@@ -258,7 +258,7 @@ You must replace `INSERTYOURAPIKEYHERE` with your personal API key.
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">POST http://ldcvia.com/1.0/login</code></p>
+<p><code class="prettyprint">POST http://eu.ldcvia.com/1.0/login</code></p>
 
 <h1 id="databases">Databases</h1>
 
@@ -310,7 +310,7 @@ You must replace `INSERTYOURAPIKEYHERE` with your personal API key.
     <span class="k">return</span> <span class="n">httpclient</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="n">httpget</span><span class="o">,</span> <span class="n">responseHandler</span><span class="o">);</span>
 <span class="o">}</span>
 </code></pre>
-<pre><code class="highlight javascript"><span class="kd">var</span> <span class="nx">root</span> <span class="o">=</span> <span class="s1">'https://ldcvia.com'</span><span class="p">;</span>
+<pre><code class="highlight javascript"><span class="kd">var</span> <span class="nx">root</span> <span class="o">=</span> <span class="s1">'https://eu.ldcvia.com'</span><span class="p">;</span>
   <span class="kd">var</span> <span class="nx">apikey</span> <span class="o">=</span> <span class="s1">'MYSECRETAPIKEY'</span><span class="p">;</span>
   <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
     <span class="na">dataType</span><span class="p">:</span> <span class="s1">'json'</span><span class="p">,</span>
@@ -341,7 +341,7 @@ You must replace `INSERTYOURAPIKEYHERE` with your personal API key.
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET http://ldcvia.com/1.0/databases</code></p>
+<p><code class="prettyprint">GET http://eu.ldcvia.com/1.0/databases</code></p>
 
 <h2 id="get-database-details">Get Database Details</h2>
 
@@ -447,7 +447,7 @@ You must replace `INSERTYOURAPIKEYHERE` with your personal API key.
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET https://ldcvia.com/1.0/database/:database</code></p>
+<p><code class="prettyprint">GET https://eu.ldcvia.com/1.0/database/:database</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -566,7 +566,7 @@ You must replace `INSERTYOURAPIKEYHERE` with your personal API key.
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET https://ldcvia.com/1.0/database/:database</code></p>
+<p><code class="prettyprint">GET https://eu.ldcvia.com/1.0/database/:database</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -677,7 +677,7 @@ You must replace `INSERTYOURAPIKEYHERE` with your personal API key.
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">DELETE https://ldcvia.com/1.0/database/:database</code></p>
+<p><code class="prettyprint">DELETE https://eu.ldcvia.com/1.0/database/:database</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -750,7 +750,7 @@ You must replace `INSERTYOURAPIKEYHERE` with your personal API key.
     <span class="k">return</span> <span class="n">httpclient</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="n">httpget</span><span class="o">,</span> <span class="n">responseHandler</span><span class="o">);</span>
 <span class="o">}</span>
 </code></pre>
-<pre><code class="highlight javascript"><span class="kd">var</span> <span class="nx">root</span> <span class="o">=</span> <span class="s1">'https://ldcvia.com'</span><span class="p">;</span>
+<pre><code class="highlight javascript"><span class="kd">var</span> <span class="nx">root</span> <span class="o">=</span> <span class="s1">'https://eu.ldcvia.com'</span><span class="p">;</span>
 <span class="kd">var</span> <span class="nx">apikey</span> <span class="o">=</span> <span class="s1">'MYSECRETAPIKEY'</span><span class="p">;</span>
 <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
   <span class="na">dataType</span><span class="p">:</span> <span class="s1">'json'</span><span class="p">,</span>
@@ -786,7 +786,7 @@ You must replace `INSERTYOURAPIKEYHERE` with your personal API key.
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET http://ldcvia.com/1.0/collections/:database</code></p>
+<p><code class="prettyprint">GET https://eu.ldcvia.com/1.0/collections/:database</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -824,7 +824,7 @@ You must replace `INSERTYOURAPIKEYHERE` with your personal API key.
     <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="na">getAsArray</span><span class="o">(</span><span class="s">"data"</span><span class="o">);</span>
 <span class="o">}</span>
 </code></pre>
-<pre><code class="highlight javascript"><span class="kd">var</span> <span class="nx">root</span> <span class="o">=</span> <span class="s1">'https://ldcvia.com'</span><span class="p">;</span>
+<pre><code class="highlight javascript"><span class="kd">var</span> <span class="nx">root</span> <span class="o">=</span> <span class="s1">'https://eu.ldcvia.com'</span><span class="p">;</span>
 <span class="kd">var</span> <span class="nx">apikey</span> <span class="o">=</span> <span class="s1">'MYSECRETAPIKEY'</span><span class="p">;</span>
 <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
   <span class="na">dataType</span><span class="p">:</span> <span class="s1">'json'</span><span class="p">,</span>
@@ -865,7 +865,7 @@ You must replace `INSERTYOURAPIKEYHERE` with your personal API key.
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET https://ldcvia.com/1.0/collections/:database/:collectionname</code></p>
+<p><code class="prettyprint">GET https://eu.ldcvia.com/1.0/collections/:database/:collectionname</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -1042,7 +1042,7 @@ You must replace `INSERTYOURAPIKEYHERE` with your personal API key.
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">DELETE https://ldcvia.com/1.0/collections/:database/:collectionname</code></p>
+<p><code class="prettyprint">DELETE https://eu.ldcvia.com/1.0/collections/:database/:collectionname</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -1277,7 +1277,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">POST https://ldcvia.com/1.0/search/:database/:collectionname</code></p>
+<p><code class="prettyprint">POST https://eu.ldcvia.com/1.0/search/:database/:collectionname</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -1418,7 +1418,7 @@ Perform a full text search for the words "some text"
     <span class="k">return</span> <span class="n">httpclient</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="n">httpget</span><span class="o">,</span> <span class="n">responseHandler</span><span class="o">);</span>
 <span class="o">}</span>
 </code></pre>
-<pre><code class="highlight javascript"><span class="kd">var</span> <span class="nx">root</span> <span class="o">=</span> <span class="s1">'https://ldcvia.com'</span><span class="p">;</span>
+<pre><code class="highlight javascript"><span class="kd">var</span> <span class="nx">root</span> <span class="o">=</span> <span class="s1">'https://eu.ldcvia.com'</span><span class="p">;</span>
 <span class="kd">var</span> <span class="nx">apikey</span> <span class="o">=</span> <span class="s1">'MYSECRETAPIKEY'</span><span class="p">;</span>
 <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
   <span class="na">dataType</span><span class="p">:</span> <span class="s1">'json'</span><span class="p">,</span>
@@ -1452,7 +1452,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET http://ldcvia.com/1.0/views/:database</code></p>
+<p><code class="prettyprint">GET https://eu.ldcvia.com/1.0/views/:database</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -1520,7 +1520,7 @@ Perform a full text search for the words "some text"
     <span class="k">return</span> <span class="n">httpclient</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="n">httpget</span><span class="o">,</span> <span class="n">responseHandler</span><span class="o">);</span>
 <span class="o">}</span>
 </code></pre>
-<pre><code class="highlight javascript"><span class="kd">var</span> <span class="nx">root</span> <span class="o">=</span> <span class="s1">'https://ldcvia.com'</span><span class="p">;</span>
+<pre><code class="highlight javascript"><span class="kd">var</span> <span class="nx">root</span> <span class="o">=</span> <span class="s1">'https://eu.ldcvia.com'</span><span class="p">;</span>
 <span class="kd">var</span> <span class="nx">apikey</span> <span class="o">=</span> <span class="s1">'MYSECRETAPIKEY'</span><span class="p">;</span>
 <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
   <span class="na">dataType</span><span class="p">:</span> <span class="s1">'json'</span><span class="p">,</span>
@@ -1552,7 +1552,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET http://ldcvia.com/1.0/views/:database/:view</code></p>
+<p><code class="prettyprint">GET https://eu.ldcvia.com/1.0/views/:database/:view</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -1690,7 +1690,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">POST https://ldcvia.com/1.0/views/:database/:viewname</code></p>
+<p><code class="prettyprint">POST https://eu.ldcvia.com/1.0/views/:database/:viewname</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -1804,7 +1804,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">DELETE https://ldcvia.com/1.0/views/:database/:viewname</code></p>
+<p><code class="prettyprint">DELETE https://eu.ldcvia.com/1.0/views/:database/:viewname</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -1910,7 +1910,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET https://ldcvia.com/1.0/document/:database/:collectionname/:unid</code></p>
+<p><code class="prettyprint">GET https://eu.ldcvia.com/1.0/document/:database/:collectionname/:unid</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -2077,7 +2077,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">PUT https://ldcvia.com/1.0/document/:database/:collectionname/:unid</code></p>
+<p><code class="prettyprint">PUT https://eu.ldcvia.com/1.0/document/:database/:collectionname/:unid</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -2240,7 +2240,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">POST https://ldcvia.com/1.0/document/:database/:collectionname/:unid</code></p>
+<p><code class="prettyprint">POST https://eu.ldcvia.com/1.0/document/:database/:collectionname/:unid</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -2360,7 +2360,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">DELETE https://ldcvia.com/1.0/document/:database/:collectionname/:unid</code></p>
+<p><code class="prettyprint">DELETE https://eu.ldcvia.com/1.0/document/:database/:collectionname/:unid</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -2412,7 +2412,7 @@ Perform a full text search for the words "some text"
 <h2 id="get-a-file-attachment">Get a File Attachment</h2>
 <pre><code class="highlight java"><span class="c1">//TODO: We need sample code here</span>
 </code></pre>
-<pre><code class="highlight javascript"><span class="nb">window</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="s2">"https://ldcvia.com/1.0/attachment/:database/:collectionname/:unid/:filename"</span><span class="p">);</span>
+<pre><code class="highlight javascript"><span class="nb">window</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="s2">"https://eu.ldcvia.com/1.0/attachment/:database/:collectionname/:unid/:filename"</span><span class="p">);</span>
 </code></pre>
 
 <blockquote>
@@ -2421,7 +2421,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET https://ldcvia.com/1.0/attachment/:database/:collectionname/:unid/:filename</code></p>
+<p><code class="prettyprint">GET https://eu.ldcvia.com/1.0/attachment/:database/:collectionname/:unid/:filename</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -2545,7 +2545,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">DELETE https://ldcvia.com/1.0/attachment/:database/:collectionname/:unid/:filename</code></p>
+<p><code class="prettyprint">DELETE https://eu.ldcvia.com/1.0/attachment/:database/:collectionname/:unid/:filename</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -2709,7 +2709,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET https://ldcvia.com/1.0/metadata/:database/:collectionname</code></p>
+<p><code class="prettyprint">GET https://eu.ldcvia.com/1.0/metadata/:database/:collectionname</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -2834,7 +2834,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">POST https://ldcvia.com/1.0/metadata/:database/:collectionname</code></p>
+<p><code class="prettyprint">POST https://eu.ldcvia.com/1.0/metadata/:database/:collectionname</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -2948,7 +2948,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET https://ldcvia.com/1.0/resetmetadata/:database/:collectionname</code></p>
+<p><code class="prettyprint">GET https://eu.ldcvia.com/1.0/resetmetadata/:database/:collectionname</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -3106,7 +3106,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET https://ldcvia.com/1.0/userdetails</code></p>
+<p><code class="prettyprint">GET https://eu.ldcvia.com/1.0/userdetails</code></p>
 
 <h2 id="get-other-user&#39;s-details">Get other user&rsquo;s details</h2>
 
@@ -3229,7 +3229,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET https://ldcvia.com/1.0/userdetails/:email</code></p>
+<p><code class="prettyprint">GET https://eu.ldcvia.com/1.0/userdetails/:email</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -3388,7 +3388,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">POST https://ldcvia.com/1.0/users</code></p>
+<p><code class="prettyprint">POST https://eu.ldcvia.com/1.0/users</code></p>
 
 <h2 id="update-users-details">Update Users details</h2>
 
@@ -3495,7 +3495,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">POST https://ldcvia.com/1.0/userdetails/:email</code></p>
+<p><code class="prettyprint">POST https://eu.ldcvia.com/1.0/userdetails/:email</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -3599,7 +3599,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">DELETE https://ldcvia.com/1.0/userdetails/:email</code></p>
+<p><code class="prettyprint">DELETE https://eu.ldcvia.com/1.0/userdetails/:email</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -3707,7 +3707,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET https://ldcvia.com/1.0/groups</code></p>
+<p><code class="prettyprint">GET https://eu.ldcvia.com/1.0/groups</code></p>
 
 <h2 id="add-multiple-users-to-group">Add multiple users to group</h2>
 <pre><code class="highlight java"><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ldcvia</span><span class="o">.</span><span class="na">rest</span><span class="o">;</span>
@@ -3812,7 +3812,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">POST https://ldcvia.com/1.0/groups</code></p>
+<p><code class="prettyprint">POST https://eu.ldcvia.com/1.0/groups</code></p>
 
 <h2 id="add-single-user-to-group">Add single user to group</h2>
 <pre><code class="highlight java"><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ldcvia</span><span class="o">.</span><span class="na">rest</span><span class="o">;</span>
@@ -3898,7 +3898,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET https://ldcvia.com/1.0/groups/:email/:groupname</code></p>
+<p><code class="prettyprint">GET https://eu.ldcvia.com/1.0/groups/:email/:groupname</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -4002,7 +4002,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">DELETE https://ldcvia.com/1.0/groups/:email/:groupname</code></p>
+<p><code class="prettyprint">DELETE https://eu.ldcvia.com/1.0/groups/:email/:groupname</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -4112,7 +4112,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET https://ldcvia.com/1.0/groups/:groupname</code></p>
+<p><code class="prettyprint">GET https://eu.ldcvia.com/1.0/groups/:groupname</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -4212,7 +4212,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">DELETE https://ldcvia.com/1.0/groups/:groupname</code></p>
+<p><code class="prettyprint">DELETE https://eu.ldcvia.com/1.0/groups/:groupname</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -4318,7 +4318,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET https://ldcvia.com/1.0/users</code></p>
+<p><code class="prettyprint">GET https://eu.ldcvia.com/1.0/users</code></p>
 
 <h2 id="add-user-to-database">Add user to database</h2>
 <pre><code class="highlight java"><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ldcvia</span><span class="o">.</span><span class="na">rest</span><span class="o">;</span>
@@ -4408,7 +4408,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET https://ldcvia.com/1.0/userdetails/:email/:database</code></p>
+<p><code class="prettyprint">GET https://eu.ldcvia.com/1.0/userdetails/:email/:database</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -4512,7 +4512,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">DELETE https://ldcvia.com/1.0/userdetails/:email/:database</code></p>
+<p><code class="prettyprint">DELETE https://eu.ldcvia.com/1.0/userdetails/:email/:database</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -4628,7 +4628,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET https://ldcvia.com/1.0/list/:database/:collectionname/:fieldname</code></p>
+<p><code class="prettyprint">GET https://eu.ldcvia.com/1.0/list/:database/:collectionname/:fieldname</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -4763,7 +4763,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET https://ldcvia.com/1.0/responses/:database/:collectionname/:unid</code></p>
+<p><code class="prettyprint">GET https://eu.ldcvia.com/1.0/responses/:database/:collectionname/:unid</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -4853,7 +4853,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET https://ldcvia.com/1.0/pdf/:database/:collectionname/:unid</code></p>
+<p><code class="prettyprint">GET https://eu.ldcvia.com/1.0/pdf/:database/:collectionname/:unid</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -4901,7 +4901,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET https://ldcvia.com/1.0/eml/:database/:collectionname/:unid</code></p>
+<p><code class="prettyprint">GET https://eu.ldcvia.com/1.0/eml/:database/:collectionname/:unid</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -4951,7 +4951,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET https://ldcvia.com/1.0/excel/:database/:collectionname</code></p>
+<p><code class="prettyprint">GET https://eu.ldcvia.com/1.0/excel/:database/:collectionname</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -5099,7 +5099,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET https://ldcvia.com/1.0/doclink/:database/:collectionname/:unid/:fieldname</code></p>
+<p><code class="prettyprint">GET https://eu.ldcvia.com/1.0/doclink/:database/:collectionname/:unid/:fieldname</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -5154,7 +5154,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET https://ldcvia.com/1.0/mergecollections/:database</code></p>
+<p><code class="prettyprint">GET https://eu.ldcvia.com/1.0/mergecollections/:database</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -5270,7 +5270,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET https://ldcvia.com/1.0/activity</code></p>
+<p><code class="prettyprint">GET https://eu.ldcvia.com/1.0/activity</code></p>
 
 <h2 id="search-logs">Search Logs</h2>
 
@@ -5389,7 +5389,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">POST https://ldcvia.com/1.0/activity</code></p>
+<p><code class="prettyprint">POST https://eu.ldcvia.com/1.0/activity</code></p>
 
 <h2 id="get-single-database-logs">Get Single Database Logs</h2>
 
@@ -5506,7 +5506,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET https://ldcvia.com/1.0/activity/:database</code></p>
+<p><code class="prettyprint">GET https://eu.ldcvia.com/1.0/activity/:database</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -5677,7 +5677,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET https://ldcvia.com/1.0/activity/:database</code></p>
+<p><code class="prettyprint">GET https://eu.ldcvia.com/1.0/activity/:database</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -5829,7 +5829,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET https://ldcvia.com/1.0/activity/:database/:collectionname</code></p>
+<p><code class="prettyprint">GET https://eu.ldcvia.com/1.0/activity/:database/:collectionname</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -6004,7 +6004,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET https://ldcvia.com/1.0/activity/:database/:collectionname</code></p>
+<p><code class="prettyprint">GET https://eu.ldcvia.com/1.0/activity/:database/:collectionname</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -6159,7 +6159,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET https://ldcvia.com/1.0/activity/:database/:collectionname/:unid</code></p>
+<p><code class="prettyprint">GET https://eu.ldcvia.com/1.0/activity/:database/:collectionname/:unid</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -6337,7 +6337,7 @@ Perform a full text search for the words "some text"
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET https://ldcvia.com/1.0/activity/:database/:collectionname/:unid</code></p>
+<p><code class="prettyprint">GET https://eu.ldcvia.com/1.0/activity/:database/:collectionname/:unid</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
