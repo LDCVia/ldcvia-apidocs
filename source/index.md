@@ -892,7 +892,7 @@ import com.ibm.xsp.extlib.util.ExtLibUtil;
  * @throws JsonException
  */
 public void deleteCollection(String dbname, String collection) throws ClientProtocolException, IOException, JsonException{
-	deleteURL("/1.0/document/" + dbname + "/" + collection);
+	deleteURL("/1.0/collections/" + dbname + "/" + collection);
 }
 
 /**
@@ -1732,6 +1732,12 @@ Parameter | Description
 :database | This is the unique name of the database which can be accessed using the databases service.
 :collectionname | The name of the collection that contains the document
 :unid | The unique ID of the document to get (this maps to the __unid field, not the _id field)
+
+### Query Parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+all | null | Adding this parameter in the format "...?all" will return extra fields computed at request time. Currently this includes a field "__iseditable" which is a boolean that defines whether the current user is allowed to modify the document using a POST / DELETE request.
 
 ## Insert a new document
 
