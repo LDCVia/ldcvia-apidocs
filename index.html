@@ -981,7 +981,7 @@ You must replace `INSERTYOURAPIKEYHERE` with your personal API key.
  * @throws JsonException
  */</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">deleteCollection</span><span class="p">(</span><span class="n">String</span> <span class="n">dbname</span><span class="o">,</span> <span class="n">String</span> <span class="n">collection</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ClientProtocolException</span><span class="o">,</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">JsonException</span><span class="o">{</span>
-    <span class="n">deleteURL</span><span class="o">(</span><span class="s">"/1.0/document/"</span> <span class="o">+</span> <span class="n">dbname</span> <span class="o">+</span> <span class="s">"/"</span> <span class="o">+</span> <span class="n">collection</span><span class="o">);</span>
+    <span class="n">deleteURL</span><span class="o">(</span><span class="s">"/1.0/collections/"</span> <span class="o">+</span> <span class="n">dbname</span> <span class="o">+</span> <span class="s">"/"</span> <span class="o">+</span> <span class="n">collection</span><span class="o">);</span>
 <span class="o">}</span>
 
 <span class="cm">/**
@@ -1931,6 +1931,22 @@ Perform a full text search for the words "some text"
 <tr>
 <td>:unid</td>
 <td>The unique ID of the document to get (this maps to the __unid field, not the _id field)</td>
+</tr>
+</tbody></table>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>all</td>
+<td>null</td>
+<td>Adding this parameter in the format &ldquo;&hellip;?all&rdquo; will return extra fields computed at request time. Currently this includes a field &ldquo;__iseditable&rdquo; which is a boolean that defines whether the current user is allowed to modify the document using a POST / DELETE request.</td>
 </tr>
 </tbody></table>
 
