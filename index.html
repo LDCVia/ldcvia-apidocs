@@ -56,7 +56,7 @@
 <h1 id="authentication">Authentication</h1>
 
 <blockquote>
-<p>To authorize, always pass the &lsquo;apikey&rsquo; HTTP header:</p>
+<p>To authorize, you always pass the &lsquo;apikey&rsquo; HTTP header:</p>
 </blockquote>
 <pre><code class="highlight java"><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ldcvia</span><span class="o">.</span><span class="na">rest</span><span class="o">;</span>
 
@@ -143,13 +143,15 @@
 
 <p>Each user in the application is assigned an API Key when they are registered. This key is unique and should be considered a secret (i.e. do not share your key with anyone else). Your API Key is required for all interactions with the API, without the key, or with an incorrect key you will not be able to access the API.</p>
 
+<p>If you prefer not to use an API key approach to authentication, you can choose to use a session cookie instead.</p>
+
 <p><code class="prettyprint">apikey: INSERTYOURAPIKEYHERE</code></p>
 
 <aside class="notice">
 You must replace `INSERTYOURAPIKEYHERE` with your personal API key.
 </aside>
 
-<h2 id="login">Login</h2>
+<h2 id="login-(for-api-key)">Login (for API Key)</h2>
 
 <p>We provide a simple login API to which you can pass a username and password, if they are valid then the matching API key will be returned with which you will be able to perform operations against the rest of the API.</p>
 <pre><code class="highlight java"><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ldcvia</span><span class="o">.</span><span class="na">rest</span><span class="o">;</span>
@@ -259,6 +261,43 @@ You must replace `INSERTYOURAPIKEYHERE` with your personal API key.
 <h3 id="http-request">HTTP Request</h3>
 
 <p><code class="prettyprint">POST http://eu.ldcvia.com/1.0/login</code></p>
+
+<h2 id="login-(for-session-cookie)">Login (for Session Cookie)</h2>
+
+<p>We provide a simple login API to which you can pass a username and password, if they are valid then a session cookie will be generated and returned with which you will be able to perform operations against the rest of the API.</p>
+<pre><code class="highlight java">
+</code></pre>
+<pre><code class="highlight javascript"><span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'username'</span><span class="p">:</span> <span class="s2">"fred@bloggs.com"</span><span class="p">,</span> <span class="s1">'password'</span><span class="p">:</span> <span class="s1">'SuperSecretPassword'</span><span class="p">};</span>
+<span class="kd">var</span> <span class="nx">root</span> <span class="o">=</span> <span class="s1">'https://eu.ldcvia.com'</span><span class="p">;</span>
+  <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+    <span class="na">dataType</span><span class="p">:</span> <span class="s1">'json'</span><span class="p">,</span>
+    <span class="na">type</span><span class="p">:</span> <span class="s1">'POST'</span><span class="p">,</span>
+    <span class="na">url</span><span class="p">:</span> <span class="nx">root</span> <span class="o">+</span> <span class="s1">'/login'</span><span class="p">,</span>
+    <span class="na">data</span><span class="p">:</span> <span class="nx">data</span><span class="p">,</span>
+    <span class="na">xhrFields</span><span class="p">:</span> <span class="p">{</span>
+      <span class="na">withCredentials</span><span class="p">:</span> <span class="kc">true</span>
+    <span class="p">},</span> 
+    <span class="na">success</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">})</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this, but more importantly a session cookie &ldquo;connect.sid&rdquo; will be returned which must then be sent with all future API requests. In jQuery this is achieved with the &ldquo;withCredentials&rdquo; property:</p>
+</blockquote>
+<pre><code class="highlight json"><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"errors"</span><span class="p">:[],</span><span class="w">
+  </span><span class="s2">"errfor"</span><span class="p">:{}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Once you have establised a session the session cookie &ldquo;connect.sid&rdquo; must be passed on all further API requests. This is achieved in jQuery using the <a href="http://api.jquery.com/jquery.ajax/">withCredentials setting</a></p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST https://eu.ldcvia.com/login</code></p>
 
 <h1 id="databases">Databases</h1>
 
