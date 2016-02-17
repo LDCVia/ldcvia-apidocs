@@ -25,7 +25,7 @@ The video below shows how to get your API key:
 
 # Authentication
 
-> To authorize, always pass the 'apikey' HTTP header:
+> To authorize, you always pass the 'apikey' HTTP header:
 
 ```java
 package com.ldcvia.rest;
@@ -113,13 +113,15 @@ $.ajax({
 
 Each user in the application is assigned an API Key when they are registered. This key is unique and should be considered a secret (i.e. do not share your key with anyone else). Your API Key is required for all interactions with the API, without the key, or with an incorrect key you will not be able to access the API.
 
+If you prefer not to use an API key approach to authentication, you can choose to use a session cookie instead.
+
 `apikey: INSERTYOURAPIKEYHERE`
 
 <aside class="notice">
 You must replace `INSERTYOURAPIKEYHERE` with your personal API key.
 </aside>
 
-## Login
+## Login (for API Key)
 
 We provide a simple login API to which you can pass a username and password, if they are valid then the matching API key will be returned with which you will be able to perform operations against the rest of the API.
 
@@ -232,6 +234,49 @@ This endpoint retrieves all databases that you have access to.
 ### HTTP Request
 
 `POST http://eu.ldcvia.com/1.0/login`
+
+
+## Login (for Session Cookie)
+
+We provide a simple login API to which you can pass a username and password, if they are valid then a session cookie will be generated and returned with which you will be able to perform operations against the rest of the API.
+
+```java
+
+```
+
+```javascript
+var data = {'username': "fred@bloggs.com", 'password': 'SuperSecretPassword'};
+var root = 'https://eu.ldcvia.com';
+  $.ajax({
+    dataType: 'json',
+    type: 'POST',
+    url: root + '/login',
+    data: data,
+    xhrFields: {
+      withCredentials: true
+    }, 
+    success: function(res) {
+      console.log(res);
+    }
+  })
+```
+> The above command returns JSON structured like this, but more importantly a session cookie "connect.sid" will be returned which must then be sent with all future API requests. In jQuery this is achieved with the "withCredentials" property:
+
+```json
+{
+  "success":true,
+  "errors":[],
+  "errfor":{}
+}
+```
+
+Once you have establised a session the session cookie "connect.sid" must be passed on all further API requests. This is achieved in jQuery using the [withCredentials setting](http://api.jquery.com/jquery.ajax/)
+
+### HTTP Request
+
+`POST https://eu.ldcvia.com/login`
+
+
 
 # Databases
 
