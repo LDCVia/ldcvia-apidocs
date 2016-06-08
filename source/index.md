@@ -479,9 +479,131 @@ Parameter | Description
 --------- | -----------
 :database | This is the unique name of the database which can be accessed using the databases service
 
+## Get Database Stats
+
+Gives details about how many documents are in the database and each collection within the database.
+
+```java
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Get a list of databases that the current user has access to
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public String getDatabaseTitle(String dbname) throws ClientProtocolException, IOException, JsonException{
+	String responseBody = loadURL("/1.0/stats/" + dbname);
+	JsonJavaFactory factory = JsonJavaFactory.instanceEx;
+	JsonJavaObject json = (JsonJavaObject) JsonParser.fromJson(factory, responseBody);
+
+	return json.getAsString("title");
+}
+
+/**
+ * Helper method to request a URL from the LDC Via service
+ * @param url
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String loadURL(String url) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpGet httpget = new HttpGet(this.baseurl + url);
+
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	httpget.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httpget, responseHandler);
+}
+```
+
+```javascript
+$.ajax({
+  dataType: 'json',
+  type: 'GET',
+  headers: { 'apikey': apikey },
+  url: '/1.0/stats/' + database,
+  success: function(res){
+    //do something
+  },
+  error: function(xhr, status, error){
+    if (xhr.status == 401){
+      alert("You do not have the rights to access the database");
+    }else{
+      alert(status + '\n' + error);
+    }
+  }
+});
+```
+
+> If you have access to the database you will see (document counts are based upon the user's rights to see documents in the database):
+
+```json
+[
+	{
+		"database":"discussion-nsf",
+		"collections":[
+			{"collection":"CompanyProfile","count":77},
+			{"collection":"Offering","count":24}
+		],
+		"count":101,
+		"stats":{"datasize":173120496,"storagesize":216100864},
+		"title":"Demo Discussion",
+		"template":"discussion"
+	}
+]
+```
+
+### HTTP Request
+`GET https://eu.ldcvia.com/1.0/stats/:database`
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+:database | This is the unique name of the database which can be accessed using the stats service
+
 ## Set Database Details
 
-Use this method to make a database read only or change its title
+Use this method to make a database read only or change its title, whether it is indexed and various other settings.
+
+You are also able to store your own unstructured meta data about the database within a "meta" property
 
 ```java
 package com.ldcvia.rest;
@@ -517,7 +639,7 @@ import com.ibm.xsp.extlib.util.ExtLibUtil;
  * @throws JsonException
  */
 public void setDatabaseTitle(String dbname, String title) throws ClientProtocolException, IOException, JsonException{
-	String responseBody = postURL("/1.0/database/" + dbname, "{\"title\": " + title + "}");
+	String responseBody = postURL("/1.0/database/" + dbname, "{\"title\": " + title + ", \"indexed\": true, \"meta\": {[\"unstructured data array"]}}");
 	JsonJavaFactory factory = JsonJavaFactory.instanceEx;
 	JsonJavaObject json = (JsonJavaObject) JsonParser.fromJson(factory, responseBody);
 }
@@ -556,7 +678,7 @@ private String postURL(String url, String data) throws ClientProtocolException, 
 ```
 
 ```javascript
-var data = "readonly=true&title=New Title";
+var data = {readonly:true, title: "New Title", indexed: true, meta: {["unstructured array item"]}};
 $.ajax({
   dataType: 'json',
   type: 'POST',
@@ -592,6 +714,38 @@ $.ajax({
 Parameter | Description
 --------- | -----------
 :database | This is the unique name of the database which can be accessed using the databases service
+
+### Meta data
+You are able to store whatever data you like within this property as long as it is well formed JSON. An example might be:
+
+{
+	"db": "discussion-nsf",
+	"readonly": false,
+	"indexed": true,
+	"publicaccess": 0,
+	"template": "discussion",
+	"meta":{
+		"security": "0",
+		"collections":[
+		{
+			"name": "CompanyProfile",
+			"title": "CompanyProfile",
+			"hidden": "1",
+			"sortby": "__created",
+			"sortdirection": "desc"
+		},
+		{
+			"sortdirection": "desc",
+			"sortby": "__created",
+			"hidden": "1",
+			"title": "Offering",
+			"name": "Offering"
+		}
+		]
+	},
+	"created": "2000-01-01T00:00:00.000Z",
+	"title": "Discussion"
+}
 
 ## Delete Entire Database
 
@@ -1790,6 +1944,8 @@ To insert a new document, use the PUT method and send JSON data to the service. 
 
 If the collection name (or database name) do not currently exist then they will automatically be created. By this process you can effectively create a brand new database by simply inserting a new document. Bear in mind that you will need to set up security for the database once it has been created.
 
+If you want to submit several documents at once (this can often result in better performance) simply send an array of JSON document objects.
+
 ```java
 package com.ldcvia.rest;
 
@@ -1936,7 +2092,7 @@ Parameter | Description
 --------- | -----------
 :database | This is the unique name of the database which can be accessed using the databases service.
 :collectionname | The name of the collection into which the document will be inserted
-:unid | The unique identifier of the document to be inserted
+:unid | [Optional] The unique identifier of the document to be inserted. If no UNID is passed, then one will be automatically generated for you. If you are sending multiple documents, do not send this URL parameter, each document that you send can have an __unid property if you want to use your own UNID, or we will generate one for you if it is missing.
 
 ## Update an existing document
 
@@ -4220,6 +4376,111 @@ Parameter | Description
 --------- | -----------
 :email | the email of the user to remove access to the database
 :database | the database to remove the user access to
+
+
+## Get List of Database Users
+
+Return a list of email addresses of people who have access to a particular database. This does not include super users unless they are explicitly added to the database (super users have access to all databases in an organisation by definition)
+
+```java
+package com.ldcvia.rest;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+import com.ibm.commons.util.io.json.JsonException;
+import com.ibm.commons.util.io.json.JsonJavaArray;
+import com.ibm.commons.util.io.json.JsonJavaFactory;
+import com.ibm.commons.util.io.json.JsonJavaObject;
+import com.ibm.commons.util.io.json.JsonParser;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
+
+/**
+ * Get A List of Users with access to a database
+ *  
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ * @throws JsonException
+ */
+public JsonJavaArray getList(String dbname, String collection, String fieldname) throws ClientProtocolException, IOException, JsonException{
+	String responseBody = loadURL("/1.0/dbacl/" + dbname;
+  JsonJavaFactory factory = JsonJavaFactory.instanceEx;
+  JsonJavaArray json = (JsonJavaArray) JsonParser.fromJson(factory, responseBody);
+
+  return json;
+}
+
+/**
+ * Helper method to request a URL from the LDC Via service
+ * @param url
+ * @return
+ * @throws ClientProtocolException
+ * @throws IOException
+ */
+private String loadURL(String url) throws ClientProtocolException, IOException {
+	CloseableHttpClient httpclient = HttpClients.createDefault();
+	HttpGet httpget = new HttpGet(this.baseurl + url);
+
+	// Create a custom response handler
+	ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+		public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+			int status = response.getStatusLine().getStatusCode();
+			if (status >= 200 && status < 300) {
+				HttpEntity entity = response.getEntity();
+				return entity != null ? EntityUtils.toString(entity) : null;
+			} else {
+				throw new ClientProtocolException("Unexpected response status: " + status);
+			}
+		}
+
+	};
+	httpget.addHeader("apikey", "MYSECRETAPIKEY");
+	return httpclient.execute(httpget, responseHandler);
+}
+```
+
+```javascript
+$.ajax({
+  dataType: 'json',
+  type: 'GET',
+  headers: {
+    'apikey': apikey
+  },
+  url: '/1.0/dbacl/dev-londc-com-demos-discussion-nsf',
+  success: function(res) {
+    //Do Something
+  }
+})
+```
+
+> The above returns an array of items
+
+```json
+["fred@ldcvia.com", "jane@ldcvia.com"]
+```
+
+### HTTP Request
+`GET https://eu.ldcvia.com/1.0/dbacl/:database`
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+:database | the database to get the users for
+
 
 # Utilities
 
